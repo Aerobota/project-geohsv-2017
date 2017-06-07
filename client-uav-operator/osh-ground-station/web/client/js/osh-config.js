@@ -99,6 +99,7 @@ function init() {
     // start streams and display
     dataSourceController.connectAll();
 
+    initWFST();
 
     //--------------------------------------------------------------//
     //------ Helper methods to add specific types of sensors -------//
@@ -567,6 +568,104 @@ function init() {
         var treeMenu = new OSH.UI.ContextMenu.StackMenu({id: treeMenuId+entityID, groupId: menuGroupId, items: menuItems});
         
         return entity;
+    }
+
+    function initWFST() {
+        var WFS_PROJECTION = "EPSG:3857";
+
+        var wfsService = new CesiumWFST({
+            featureNS: 'https://gsx.geolytix.net/geoserver/geolytix_wfs',
+            featureType: 'wfs_color',
+            srsName: WFS_PROJECTION,
+            url:"https://gsx.geolytix.net/geoserver/geolytix_wfs/ows"
+        });
+
+        wfsService.onError = function(response) {
+            console.log("Error: cannot read WFS stream: "+response);
+        };
+
+        // start the draw helper to enable shape creation and editing
+        var drawHelper = new DrawHelper(cesiumView.viewer);
+
+        var toolbar = drawHelper.addToolbar(document.getElementById("toolbar"), {
+            buttons: ['marker', 'polyline', 'polygon']
+        });
+
+        // add draw helper listener
+        toolbar.addListener('markerCreated', drawHelperMarkerCreatedListener);
+        toolbar.addListener('polylineCreated', drawHelperPolylineCreatedListener);
+        toolbar.addListener('polygonCreated', drawHelperPolygonCreatedListener);
+
+        var i = 0;
+        // read features from WFS
+        var onSuccessRead = function(geometryArray) {
+            for(let i=0;i < geometryArray.length;i++) {
+                var primitive = geometryArray[i];
+
+                if(primitive.isPolygon || primitive.isPolyline) {
+                    cesiumView.viewer._cesiumWidget.scene.primitives.add(primitive);
+                }
+
+                else if(primitive.isPoint) {
+                    var b = new Cesium.BillboardCollection();
+                    cesiumView.viewer._cesiumWidget.scene.primitives.add(b);
+                    var billboard = b.add(primitive);
+                }
+            }
+        };
+
+        var onSuccessWrite = function(message) {
+            refresh();
+        };
+
+        var bounds = "-20026376.39%2C-20048966.10%2C20026376.39%2C20048966.10";
+        var request = "service=WFS&version=1.1.0&request=GetFeature&typename=wfs_color&srsname=EPSG%3A3857&bbox="+bounds+"%2CEPSG%3A3857";
+
+        wfsService.readAsCesiumPrimitives(request,onSuccessRead);
+
+        //-------- CESIUM DRAW HELPER LISTENERS ---------------//
+
+        function drawHelperMarkerCreatedListener(event) {
+            // create one common billboard collection for all billboards
+
+            var point = {
+                show : true,
+                position : event.position,
+                pixelOffset : new Cesium.Cartesian2(0, 0),
+                eyeOffset : new Cesium.Cartesian3(0.0, 0.0, 0.0),
+                horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
+                verticalOrigin : Cesium.VerticalOrigin.CENTER,
+                scale : 1.0,
+                image: './img/glyphicons_242_google_maps.png',
+                color : new Cesium.Color(1.0, 1.0, 1.0, 1.0),
+                isPoint:true
+            };
+
+            wfsService.writeTransactionAsCesiumPrimitives(point,null,null,"Point",onSuccessWrite);
+        }
+
+        function drawHelperPolylineCreatedListener(event) {
+            var polyline = new DrawHelper.PolylinePrimitive({
+                positions: event.positions,
+                width: 5,
+                geodesic: true
+            });
+            wfsService.writeTransactionAsCesiumPrimitives(polyline,null,null,"polyline",onSuccessWrite);
+        }
+
+        function drawHelperPolygonCreatedListener(event) {
+            var cesiumPolygon = new DrawHelper.PolygonPrimitive({
+                positions: event.positions
+                //material : Cesium.Material.fromType('Checkerboard')
+            });
+
+            wfsService.writeTransactionAsCesiumPrimitives(cesiumPolygon,null,null,"polygon",onSuccessWrite);
+        }
+
+        function refresh() {
+            cesiumView.viewer._cesiumWidget.scene.primitives.removeAll();
+            wfsService.readAsCesiumPrimitives(request,onSuccessRead);
+        }
     }
 
 } // end init()

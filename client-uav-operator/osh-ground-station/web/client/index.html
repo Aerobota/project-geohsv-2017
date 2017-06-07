@@ -4,7 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title>UAV Command (OpenSensorHub)</title>
+    <title>Client UAV Operator</title>
 
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 
@@ -12,16 +12,13 @@
     <link rel="stylesheet" type="text/css" href="toolkit/vendor/vendor.min.css">
     <script type="text/javascript" src="toolkit/vendor/vendor.min.js"></script>
 
-    <!-- WFS-T EXTENSION -->
-    <script type="text/javascript" src="toolkit/vendor/cesium-wfst/ol.js"></script>
-    <script type="text/javascript" src="toolkit/vendor/cesium-wfst/cesium-wfst.js"></script>
-
     <!-- OSH -->
     <link rel="stylesheet" type="text/css" href="toolkit/css/osh.min.css">
     <script type="text/javascript" src="toolkit/js/osh.min.js"></script>
 
     <script>
         window.CESIUM_BASE_URL = 'toolkit/vendor/';
+        window.OSH.BASE_WORKER_URL = "toolkit/js/workers/";
     </script>
 
     <!-- This client configuration -->
@@ -43,5 +40,17 @@
     <a class="snapshot-btn fa fa-camera fa-3x" onclick="snapshotClick()"></a>
     <div id="main-container" class="test"></div>
     <div id="dialog-main-container" class="video-main-container"></div>
+    <div id="toolbar"/>
+
+    <style>
+        #toolbar {
+            position: absolute;
+            top: 325px;
+            left: 10px;
+            display: inline;
+            background: none;
+            border-radius: 5px;
+        }
+    </style>
 </body>
 </html>
