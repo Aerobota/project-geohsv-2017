@@ -2,23 +2,31 @@ function init() {
 
     var hostName = "localhost:8181";
 
-    // time settings (real-time or archive)
-    var startTime = "now";
+    // time settings
+    // for real-time
+    /*var startTime = "now";
     var endTime = "2080-01-01T00:00:00Z";
-    //var startTime = "2017-03-03T09:00:40Z";
-    //var endTime = "2017-03-03T09:22:00Z";
-    var replaySpeed = "1";
+    var sync = false;*/
     
-    // synchronization (disable for real-time)
-    var sync = false;
-    var bufferingTime = 300;
+    // for replay
+    var startTime = "2017-07-17T15:41:40.601Z";
+    var endTime = "2017-07-17T15:57:28.601Z";
+    //var startTime = "2017-07-17T22:12:00.601Z";
+    //var endTime = "2017-07-17T22:57:28.601Z";
+    var sync = true;
+
+    var replaySpeed = "1";
+    var bufferingTime = 100;
     var dataStreamTimeOut = 4000;
     var useFFmpegWorkers = true;
         
     // MSL to ellipsoid correction
-    var mslToWgs84 = 53.5; // Toulouse
+    //var mslToWgs84 = 53.5; // Toulouse
     //var mslToWgs84 = -29.5+5; // Huntsville Airport Road
+    var mslToWgs84 = -40; // Huntsville VBC roof
     //var mslToWgs84 = -29-4; // Madison
+    var soloHeadingAdjust = 0.0;
+    var soloAltitudeAdjust = 0.0; 
     
     // menu ids
     var treeMenuId = "tree-menu-";
@@ -41,14 +49,26 @@ function init() {
         
     var cesiumView = new OSH.UI.CesiumView("main-container", []);
     
-    
+    // add building models
+    var position = Cesium.Cartesian3.fromDegrees(-86.59079648585, 34.72699075691, 153.0);
+    var orientation = new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(0.2331612632112), 0, 0);
+    var quat = Cesium.Transforms.headingPitchRollQuaternion(position, orientation);
+    cesiumView.viewer.entities.add({
+        name : "Von Braun Center",
+        position : position,
+        orientation : quat,
+        model : {
+            uri : "./models/von_braun_center.glb"
+        }
+    });
+
     // --------------------------------------------------------------//
     // ------------------------- Entities ---------------------------//
     // --------------------------------------------------------------//
     
     var treeItems = [];
     addSoloUav("solo1", "3DR Solo", "urn:osh:solo-nav", "urn:osh:solo-video");
-    addAndroidPhone("android1", "Alex - Nexus5", "urn:android:device:a0e0eac2fea3f614-sos", null, 0.0);
+    //addAndroidPhone("android1", "Alex - Nexus5", "urn:android:device:a0e0eac2fea3f614-sos", null, 0.0);
     //addArduino(...)
     
 
@@ -76,9 +96,8 @@ function init() {
 
     if (startTime !== "now") {
         var rangeSlider = new OSH.UI.RangeSlider("rangeSlider",{
-            startTime: soloGPS.properties.startTime,
-            endTime: soloGPS.properties.endTime,
-            dataSourcesId: [soloGPS.id]
+            startTime: startTime,
+            endTime: endTime
         });
 
         if(typeof currentClassName !== "undefined") {
@@ -95,6 +114,8 @@ function init() {
        }
        mainContainer.setAttribute("class",currentClassName);
     }
+
+    addAdjusmentSliders();
 
     // start streams and display
     dataSourceController.connectAll();
@@ -254,7 +275,7 @@ function init() {
                         return {
                             x: rec.lon,
                             y: rec.lat,
-                            z: rec.alt+mslToWgs84 
+                            z: rec.alt + mslToWgs84 + soloAltitudeAdjust
                         };
                     }
                 },
@@ -262,11 +283,16 @@ function init() {
                     dataSourceIds: [attitudeData.getId()],
                     handler: function(rec) {
                         return {
-                            heading: rec.heading,
+                            heading: rec.heading + soloHeadingAdjust,
                             pitch: 0,// rec.pitch,
                             roll: 0,// rec.roll
                         };
                     }
+                },
+                gimbalOrientation: {
+                    heading: 0,
+                    pitch: -90,
+                    roll: 0
                 },
                 gimbalOrientationFunc: {
                     dataSourceIds: [gimbalData.getId()],
@@ -666,6 +692,30 @@ function init() {
             cesiumView.viewer._cesiumWidget.scene.primitives.removeAll();
             wfsService.readAsCesiumPrimitives(request,onSuccessRead);
         }
+    }
+
+
+    function addAdjusmentSliders() {
+        
+        var headingAdj = document.getElementById("headingAdj");
+        var headingAdjVal = document.getElementById("headingAdjVal");
+        headingAdj.min = -200;
+        headingAdj.max = 200;
+        headingAdj.value = 0;
+        headingAdj.oninput = function() {
+            soloHeadingAdjust = headingAdj.value/10.0;
+            headingAdjVal.innerHTML = " "+soloHeadingAdjust+"°";
+        };
+
+        var altitudeAdj = document.getElementById("altitudeAdj");
+        var altitudeAdjVal = document.getElementById("altitudeAdjVal");
+        altitudeAdj.min = -250;
+        altitudeAdj.max = 250;
+        altitudeAdj.value = 0;
+        altitudeAdj.oninput = function() {
+            soloAltitudeAdjust = altitudeAdj.value/10.0;
+            altitudeAdjVal.innerHTML = " "+soloAltitudeAdjust+"m";
+        };
     }
 
 } // end init()
