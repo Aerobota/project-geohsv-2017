@@ -1,0 +1,18 @@
+
+[DONE] Task for preset position when value selected from drop-down
+[DONE] Unlock fixed window position
+[DONE] Allow resizing of video window and force proper aspect sizes
+[DONE] Change transparency of cone to 50%
+[DONE] Develop window to support drop-down for location sources
+[DONE] Restrict to top-down view
+[DONE] Look at setting up default delta values for relative pan, tilt, zoom for all video cameras
+[DONE] Change color of camera model to match that of red and blue camera icon that's in the tree menu
+
+[x] Assign zoom level based on min/max values obtained from camera
+[x] Resize model icon
+[x] Setup client to receive location values from source
+[x] Setup client to task camera using obtained lat/lon/alt
+[x] Setup calibration for mapping ptz to lat/lon/alt (not a client issue)
+[x] Resize cone based on zoom level
+[x] Zoom to marker
+[x] Look at moving green selection box to appear over center of camera, instead of over the cone

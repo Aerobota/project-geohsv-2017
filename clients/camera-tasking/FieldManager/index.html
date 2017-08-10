@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <title>Field Manager</title>
+    <link rel="icon" type="image/png" href="images/sensorhub_logo_128.png">
+
+    <!-- VENDOR -->
+    <link rel="stylesheet" href="vendor/all-in-one/vendor.css"/>
+    <script type="text/javascript" src="vendor/all-in-one/vendor.js"></script>
+
+    <!-- OSH Toolkit -->
+    <link rel="stylesheet" href="css/osh.css">
+    <script type="text/javascript" src="js/osh.js"></script>
+    <script type="text/javascript" src="js/osh-config.js"></script>
+    <script type="text/javascript" src="js/locationTasker.js"></script>
+
+    <!-- JQuery -->
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+
+    <!--Video Display Styling -->
+    <link rel="stylesheet" type="text/css" href="css/video-display.css">
+    <link rel="stylesheet" type="text/css" href="css/tasking.css">
+
+</head>
+<body onload="init()" id="body">
+  <nav class="navbar navbar-default navbar-inverse ">
+      <div class="container-fluid">
+          <div class="navbar-header">
+              <a class="navbar-brand" href="http://www.opensensorhub.org/">
+                  <img src="https://github.com/sensiasoft/sensorhub/wiki/images/sensorhub_logo_128.png"
+                       style="-webkit-animation-play-state: paused; -webkit-transition: none; transition: none; width:50px;height:50px;">
+                  OpenSensorHub</a>
+          </div>
+      </div>
+  </nav>
+  <div id="main-container" class="main-view"></div>
+</body>
+</html>
