@@ -66,8 +66,8 @@ function init() {
   //----- PTZ CAMS ------------------------------------------------------------------------------------------------------------------------------------//
   // addDahuaCam(entityID, entityName, offeringID, spsID, headingOffset, dahuaPresets, dahuaTaskers, rotDir)
 
-  addDahuaCam("dahua01", "Dahua PTZ 01", "urn:office:dahua:01-sos", "urn:dahua:cam:1G0215CGAK00046", 24.0, dahua01Presets, dahua01Taskers, -1.0);
-  // addDahuaCam("dahua02", "Dahua PTZ 02", "urn:cityhall:dahua:01-sos", "urn:dahua:cam:WT1J033A7PAN00005", 24.0, dahua01Presets, dahua01Taskers, -1.0);
+  // addDahuaCam("dahua01", "Dahua PTZ 01", "urn:office:dahua:01-sos", "urn:dahua:cam:1G0215CGAK00046", 24.0, dahua01Presets, dahua01Taskers, -1.0);
+  addDahuaCam("dahua02", "Dahua PTZ 02", "urn:cityhall:dahua:01-sos", "urn:dahua:cam:WT1J033A7PAN00005", 24.0, dahua01Presets, dahua01Taskers, -1.0);
   // addAxisCam("axis01", "Axis PTZ 01", "urn:office:axis:01-sos", "urn:axis:cam:00408CB95A55", 0.0, axis01Presets, axis01Taskers)
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 
@@ -207,8 +207,8 @@ function init() {
 
     var taskingView = new OSH.UI.PtzTaskingView(videoDialog.popContentDiv.id,{
         dataSenderId: ptzTasking.id,
-        ptIncrement: 20,
-        zIncrement: 40,
+        ptIncrement: 5,
+        zIncrement: 0.05,
         presets: dahuaPresets,
         taskers: dahuaTaskers,
         panRotFactor: rotDir
@@ -559,7 +559,7 @@ function init() {
                       };
                   }
               },
-              icon : "./models/GPS_Blue.glb",
+              icon : "./models/PTZwithConeSmooth.glb",
               label : entityName
               // iconFunc : {
               //     dataSourceIds: [locationData.getId()],

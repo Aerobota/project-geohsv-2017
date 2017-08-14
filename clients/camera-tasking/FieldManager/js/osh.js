@@ -8854,7 +8854,7 @@ OSH.UI.PtzTaskingView = OSH.UI.View.extend({
           ptIncrement = options.ptIncrement;
         }
 
-        var zIncrement = 100;
+        var zIncrement = 0.1;
         if(typeof (options) !== "undefined" && (options.zIncrement)) {
           zIncrement = options.zIncrement;
         }
@@ -8877,6 +8877,7 @@ OSH.UI.PtzTaskingView = OSH.UI.View.extend({
         document.querySelector('#'+this.rootTag.id+ " >  .ptz-zoom > .ptz-zoom-in").onclick =  function(){this.onZoomClick(zIncrement)}.bind(this);
         document.querySelector('#'+this.rootTag.id+ " >  .ptz-zoom > .ptz-zoom-out").onclick =  function(){this.onZoomClick(-1*zIncrement)}.bind(this);
         document.querySelector('.keepZoomCheckbox').onclick =  function(){this.getCheckboxStatus()}.bind(this); // Get status of checkbox on click
+
 
         // add presets if any
         if(typeof (options) !== "undefined" && (options.presets)) {
@@ -9109,7 +9110,7 @@ OSH.UI.PtzTaskingView = OSH.UI.View.extend({
       var presetServerTag = document.querySelector('#'+this.rootTag.id+ "  .ptz-right  .ptz-select-style  .ptz-presets");
       presetServerTag.selectedIndex = 0;
 
-      this.onChange(null,null,null,null,null,value/120.0,null,null);
+      this.onChange(null,null,null,null,null,value,null,null);
     },
 
     /**
