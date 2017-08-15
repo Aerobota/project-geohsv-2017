@@ -1,0 +1,36 @@
+apply from: gradle.oshCoreDir + '/common.gradle'
+
+description = 'UWB Positioning Node'
+ext.details = 'OSH node collecting data from UWB positioning system'
+
+// get repositories collected in parent build
+repositories.addAll(rootProject.repositories)
+
+dependencies {
+  compile 'org.sensorhub:sensorhub-core:' + oshCoreVersion
+  compile 'org.sensorhub:sensorhub-service-swe:' + oshCoreVersion
+  compile 'org.sensorhub:sensorhub-storage-perst:' + oshCoreVersion
+  compile 'org.sensorhub:sensorhub-webui-core:' + oshCoreVersion
+  compile 'org.sensorhub:sensorhub-comm-ip-zeroconf:' + oshCoreVersion
+  compile 'org.sensorhub:sensorhub-comm-rxtx:' + oshCoreVersion
+  compile 'org.sensorhub:sensorhub-driver-fakeweather:[0.1,2.0)'
+  compile 'org.sensorhub:sensorhub-driver-trek1000:[0.1,2.0)'
+}
+
+distributions {
+  main {
+    contents {
+      from 'scripts'
+      from 'config'
+      from 'README.md'
+      into('lib') {
+        from project.configurations.compileClasspath
+      }
+    }
+  }
+}
+
+
+
+
+

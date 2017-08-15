@@ -3,7 +3,7 @@ def oshMainDir = "$rootDir/.."
 gradle.ext.oshCoreDir = "$oshMainDir/osh-core"
 
 // include builds from other repos
-def repos = ['osh-core', 'osh-comm', 'osh-sensors', 'osh-video']
+def repos = ['osh-core', 'osh-comm', 'osh-sensors', 'osh-video', 'osh-positioning']
 repos.each { repoName ->
   File repoDir = new File(oshMainDir, repoName)
   if (!repoDir.exists())
