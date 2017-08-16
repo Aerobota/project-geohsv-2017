@@ -1,6 +1,6 @@
 apply from: gradle.oshCoreDir + '/common.gradle'
 
-description = 'UWB Positioning Node'
+description = 'GeoHSV UWB Positioning Node'
 ext.details = 'OSH node collecting data from UWB positioning system'
 
 // get repositories collected in parent build
