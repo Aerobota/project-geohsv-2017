@@ -1,0 +1,179 @@
+[
+  {
+    "objClass": "org.sensorhub.impl.service.HttpServerConfig",
+    "httpPort": 8181,
+    "httpsPort": 0,
+    "staticDocRootUrl": "web",
+    "servletsRootUrl": "/sensorhub",
+    "maxRequestsPerSecond": 25,
+    "authMethod": "NONE",
+    "keyStorePath": ".keystore/ssl_keys",
+    "trustStorePath": ".keystore/ssl_trust",
+    "id": "9b357b97-26fd-4216-b597-dccfe6f3e383",
+    "moduleClass": "org.sensorhub.impl.service.HttpServer",
+    "name": "HTTP Server",
+    "autoStart": true
+  },
+  {
+    "objClass": "org.sensorhub.ui.AdminUIConfig",
+    "widgetSet": "org.sensorhub.ui.SensorHubWidgetSet",
+    "customPanels": [],
+    "customForms": [],
+    "id": "f843291f-a926-43c4-8a49-a6a8ac2f8c97",
+    "moduleClass": "org.sensorhub.ui.AdminUIModule",
+    "name": "Admin UI",
+    "autoStart": true
+  },
+  {
+    "objClass": "org.sensorhub.impl.service.sos.SOSServiceConfig",
+    "enableTransactional": true,
+    "maxObsCount": 100,
+    "maxRecordCount": 100000,
+    "newStorageConfig": {
+      "objClass": "org.sensorhub.impl.persistence.perst.BasicStorageConfig",
+      "storagePath": "db.dat",
+      "memoryCacheSize": 1024,
+      "objectCacheSize": 100,
+      "moduleClass": "org.sensorhub.impl.persistence.perst.ObsStorageImpl",
+      "autoStart": false
+    },
+    "dataProviders": [
+      {
+        "objClass": "org.sensorhub.impl.service.sos.SensorDataProviderConfig",
+        "sensorID": "ef2814a2-abfc-4291-9819-dab5c554b6fa",
+        "storageID": "8d6901d7-7d8a-449a-a61e-c35a96c53f98",
+        "hiddenOutputs": [],
+        "liveDataTimeout": 10.0,
+        "maxFois": 10,
+        "Offering ID": "urn:osh:cityhall",
+        "enabled": true
+      }
+    ],
+    "dataConsumers": [],
+    "customFormats": [
+      {
+        "objClass": "org.sensorhub.impl.service.sos.SOSCustomFormatConfig",
+        "mimeType": "video/mp4",
+        "className": "org.sensorhub.impl.service.sos.video.MP4Serializer"
+      },
+      {
+        "objClass": "org.sensorhub.impl.service.sos.SOSCustomFormatConfig",
+        "mimeType": "video/x-motion-jpeg",
+        "className": "org.sensorhub.impl.service.sos.video.MJPEGSerializer"
+      }
+    ],
+    "security": {
+      "objClass": "org.sensorhub.api.security.SecurityConfig",
+      "enableAccessControl": false,
+      "requireAuth": true
+    },
+    "ogcCapabilitiesInfo": {
+      "objClass": "org.sensorhub.impl.service.ogc.OGCServiceConfig$CapabilitiesInfo",
+      "title": "Field Node SOS Server",
+      "description": "SOS hosting all data collected from local sensors and UAV",
+      "serviceProvider": {
+        "objClass": "org.vast.util.ResponsibleParty",
+        "individualName": "Alex Robin",
+        "organizationName": "Sensiasoft",
+        "positionName": "CTO",
+        "voiceNumbers": [],
+        "faxNumbers": [],
+        "deliveryPoints": [],
+        "city": "Huntsville",
+        "administrativeArea": "AL",
+        "country": "USA",
+        "emails": [],
+        "hrefPresent": false
+      }
+    },
+    "enableHttpGET": true,
+    "enableHttpPOST": true,
+    "enableSOAP": true,
+    "endPoint": "/sos",
+    "id": "d1050494-dfc4-4318-8592-530984056cd6",
+    "moduleClass": "org.sensorhub.impl.service.sos.SOSService",
+    "name": "SOS Service",
+    "autoStart": true
+  },
+  {
+    "objClass": "org.sensorhub.impl.sensor.dahua.DahuaCameraConfig",
+    "http": {
+      "objClass": "org.sensorhub.impl.comm.HTTPConfig",
+      "remotePort": 80,
+      "user": "admin",
+      "password": "admin",
+      "enableTLS": false,
+      "remoteHost": "172.31.255.1",
+      "localAddress": "AUTO"
+    },
+    "rtsp": {
+      "objClass": "org.sensorhub.impl.sensor.rtpcam.RTSPConfig",
+      "videoPath": "/cam/realmonitor?channel=1&subtype=0",
+      "localUdpPort": 20000,
+      "onlyConnectRtsp": false,
+      "remotePort": 554,
+      "user": "admin",
+      "password": "admin",
+      "enableTLS": false,
+      "remoteHost": "172.31.255.1",
+      "localAddress": "AUTO"
+    },
+    "connection": {
+      "objClass": "org.sensorhub.impl.comm.RobustIPConnectionConfig",
+      "checkReachability": true,
+      "connectTimeout": 5000,
+      "reconnectPeriod": 10000,
+      "reconnectAttempts": 0
+    },
+    "video": {
+      "objClass": "org.sensorhub.impl.sensor.dahua.DahuaCameraConfig$VideoConfig",
+      "resolution": "HD_720P",
+      "frameRate": 30,
+      "grayscale": false
+    },
+    "ptz": {
+      "objClass": "org.sensorhub.impl.sensor.videocam.ptz.PtzConfig",
+      "presets": [
+        {
+          "objClass": "org.sensorhub.impl.sensor.videocam.ptz.PtzPreset",
+          "name": "Home",
+          "pan": 0.0,
+          "tilt": 0.0,
+          "zoom": 0.0
+        }
+      ]
+    },
+    "position": {
+      "objClass": "org.sensorhub.api.sensor.PositionConfig",
+      "location": {
+        "objClass": "org.sensorhub.api.sensor.PositionConfig$LLALocation",
+        "lat": 34.564,
+        "lon": -86.324,
+        "alt": 0.0
+      }
+    },
+    "exclusiveControl": true,
+    "id": "ef2814a2-abfc-4291-9819-dab5c554b6fa",
+    "moduleClass": "org.sensorhub.impl.sensor.dahua.DahuaCameraDriver",
+    "name": "City Hall Camera",
+    "autoStart": true
+  },
+  {
+    "objClass": "org.sensorhub.impl.persistence.StreamStorageConfig",
+    "storageConfig": {
+      "objClass": "org.sensorhub.impl.persistence.perst.BasicStorageConfig",
+      "storagePath": "cityhall-video.dat",
+      "memoryCacheSize": 1024,
+      "objectCacheSize": 100,
+      "moduleClass": "org.sensorhub.impl.persistence.perst.ObsStorageImpl",
+      "autoStart": false
+    },
+    "dataSourceID": "ef2814a2-abfc-4291-9819-dab5c554b6fa",
+    "minCommitPeriod": 10000,
+    "processEvents": true,
+    "id": "8d6901d7-7d8a-449a-a61e-c35a96c53f98",
+    "moduleClass": "org.sensorhub.impl.persistence.GenericStreamStorage",
+    "name": "CityHall Camera Storage",
+    "autoStart": false
+  }
+]
