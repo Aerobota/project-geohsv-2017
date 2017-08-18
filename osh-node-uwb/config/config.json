@@ -110,7 +110,26 @@
       "moduleClass": "org.sensorhub.impl.comm.rxtx.RxtxSerialCommProvider",
       "autoStart": false
     },
-    "anchorLocations": [],
+    "anchorLocations": [
+      {
+        "objClass": "org.sensorhub.api.sensor.PositionConfig$LLALocation",
+        "lat": 0.0,
+        "lon": 0.0,
+        "alt": 0.0
+      },
+      {
+        "objClass": "org.sensorhub.api.sensor.PositionConfig$LLALocation",
+        "lat": 0.0,
+        "lon": 7.9,
+        "alt": 0.0
+      },
+      {
+        "objClass": "org.sensorhub.api.sensor.PositionConfig$LLALocation",
+        "lat": 11.9,
+        "lon": 0.0,
+        "alt": 0.0
+      }
+    ],
     "id": "d9a5aca4-69ba-45d3-8446-02202beb9c80",
     "moduleClass": "org.sensorhub.impl.sensor.trek1000.Trek1000Sensor",
     "name": "UWB Positioning",
@@ -133,7 +152,7 @@
       "maxQueueSize": 10,
       "maxConnectErrors": 10,
       "checkReachability": true,
-      "connectTimeout": 3000,
+      "connectTimeout": 10000,
       "reconnectPeriod": 10000,
       "reconnectAttempts": 3
     },
