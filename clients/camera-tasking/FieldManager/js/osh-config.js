@@ -1,7 +1,7 @@
 function init() {
 
-  // var hostName = "botts-geo.com";
-  var hostName = "localhost";
+  var hostName = "botts-geo.com";
+  //var hostName = "localhost";
 
   var startTime = "now";
   var endTime = "2100-01-01T20:18:05.451Z";
@@ -47,11 +47,11 @@ function init() {
   // var tasker03 = addAndroidPhone("android01", "Mike's Nexus", "urn:android:device:89845ed469b7edc7-sos", null,0);
 
   ////// GeoHSV Demo  /////////////////////////////////////////////////////////////////////////////////////////////////
-  var tasker01 = addAndroidPhone("alexNexus5x", "Officer Robin 1", "urn:android:device:cac2076d70a6090f-sos", null,0);
-  // var tasker02 = addAndroidPhone("alexNexus5", "Officer Robin 2", "urn:android:device:a0e0eac2fea3f614-sos", null,0);
-  var tasker03 = addAndroidPhone("mikePixel", "Officer Botts 1", "urn:android:device:e7e86a0c6539c18a-sos", null,0);
-  // var tasker04 = addAndroidPhone("mikeNexus5", "Officer Botts 2", "urn:android:device:89845ed469b7edc7-sos", null,0);
-  var tasker05 = addAndroidPhone("ianHtc10", "Officer Patterson", "urn:android:device:1aea89f8ebbd4b09-sos", null,0);
+  //var tasker01 = addAndroidPhone("alexNexus5x", "Officer Robin 1", "urn:android:device:cac2076d70a6090f-sos", null,0);
+  var tasker02 = addAndroidPhone("alexNexus5", "Officer Robin 2", "urn:android:device:a0e0eac2fea3f614-sos", null,0);
+  //var tasker03 = addAndroidPhone("mikePixel", "Officer Botts 1", "urn:android:device:e7e86a0c6539c18a-sos", null,0);
+  var tasker04 = addAndroidPhone("mikeNexus5", "Officer Botts 2", "urn:android:device:89845ed469b7edc7-sos", null,0);
+  //var tasker05 = addAndroidPhone("ianHtc10", "Officer Patterson", "urn:android:device:1aea89f8ebbd4b09-sos", null,0);
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 
@@ -68,7 +68,8 @@ function init() {
   //----- TASKERS ----------------------------------------------------------------------------------//
   // var dahua01Taskers = [tasker01.dataSources[0], tasker02.dataSources[0], tasker03.dataSources[0]];
   // var dahua01Taskers = [tasker01.dataSources[0]];
-  var dahua01Taskers = [tasker01.dataSources[1], tasker03.dataSources[1], tasker05.dataSources[1]];
+  //var dahua01Taskers = [tasker01.dataSources[1], tasker02.dataSources[1], tasker03.dataSources[1], tasker04.dataSources[1], tasker05.dataSources[1]];
+  var dahua01Taskers = [tasker02.dataSources[1], tasker04.dataSources[1]];
   // var axis01Taskers = [tasker01.dataSources[0], tasker02.dataSources[0], tasker03.dataSources[0]];
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 
@@ -77,9 +78,9 @@ function init() {
   //----- PTZ CAMS ------------------------------------------------------------------------------------------------------------------------------------//
   // addDahuaCam(entityID, entityName, offeringID, spsID, headingOffset, dahuaPresets, dahuaTaskers, rotDir)
 
-  addDahuaCam("dahua01", "Dahua PTZ 01", "urn:cityhall:dahua:01-sos", "urn:dahua:cam:WT1J033A7PAN00005", 24.0, dahua01Presets, dahua01Taskers, -1.0);
+  //addDahuaCam("dahua01", "Dahua PTZ 01", "urn:cityhall:dahua:01-sos", "urn:dahua:cam:WT1J033A7PAN00005", 24.0, dahua01Presets, dahua01Taskers, -1.0);
   // addDahuaCam("dahua02", "Dahua PTZ 02", "urn:office:dahua:02-sos", "urn:dahua:cam:1G0215CGAK00046", 24.0, dahua02Presets, dahua02Taskers, -1.0);
-  // addDahuaCam("dahua02", "Dahua PTZ 02", "urn:cityhall", "urn:dahua:cam:WT1J033A7PAN00005", 24.0, dahua02Presets, dahua02Taskers, -1.0);
+  addDahuaCam("dahua02", "Dahua PTZ 02", "urn:osh:cityhall", "urn:dahua:cam:WT1J033A7PAN00005", 24.0, dahua01Presets, dahua01Taskers, -1.0);
   // addAxisCam("axis01", "Axis PTZ 01", "urn:office:axis:01-sos", "urn:axis:cam:00408CB95A55", 0.0, axis01Presets, axis01Taskers)
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 

@@ -16,3 +16,9 @@
 [x] Resize cone based on zoom level
 [x] Zoom to marker
 [x] Look at moving green selection box to appear over center of camera, instead of over the cone
+
+
+
+Alex
+- Extract onSelectedSources from Toolkit code (maybe merge with preset list?)
+- Review click logic in CesiumView

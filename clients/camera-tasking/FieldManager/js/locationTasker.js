@@ -167,14 +167,18 @@ function makeInsertResultConnection (){
   insertWs.onclose = function() {
     console.log("ws disconnected");
     readyToSend = false;
-    // setTimeout(makeInsertResultConnection, 1000);
+    makeInsertResultConnection();
   };
 }
 
 function makeGetResultWsConnection (offeringId) {
+  /*var getUrl = 'ws://' + hostName +
+    ':8181/sensorhub/sos?service=SOS&version=2.0&request=GetResult&offering=' + offeringId +
+    '&observedProperty=http://www.opengis.net/def/property/OGC/0/SensorLocation&temporalFilter=phenomenonTime,now/2100-01-01';*/
   var getUrl = 'ws://' + hostName +
     ':8181/sensorhub/sos?service=SOS&version=2.0&request=GetResult&offering=' + offeringId +
-    '&observedProperty=http://www.opengis.net/def/property/OGC/0/SensorLocation&temporalFilter=phenomenonTime,now/2100-01-01';
+    '&observedProperty=http://sensorml.com/ont/swe/property/Location&temporalFilter=phenomenonTime,now/2100-01-01';
+
   console.log("making ws connction with " + offeringId);
   getWs = new WebSocket(getUrl);
   getWs.binaryType = 'arraybuffer';

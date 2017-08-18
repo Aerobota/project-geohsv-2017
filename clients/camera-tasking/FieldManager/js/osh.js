@@ -6777,7 +6777,7 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
               console.log("alt is undefined...")
               alt = 155.0;
             }
-            alt = alt + 38.0; // Add 38 meters to get more accurate altitude of downtown HSV
+            
             var dt = new Date().toISOString();
             var kZ = getKeepZoom();
             var dataString = dt + ',' + latitudeString + ',' + longitudeString + ',' + alt + ',' + kZ;
@@ -6932,7 +6932,7 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
     var imgIcon = properties.icon;
 
     //---------------------- Model Scaling ---------------------------//
-    var modelScale = 20; // initial icon (model) scale
+    var modelScale = 10; // initial icon (model) scale
     //---------------------------------------------------------------//
 
     if (!isNaN(lon) && !isNaN(lat)) {
@@ -6961,7 +6961,10 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
       // }
 
       if(properties.icon.endsWith(".glb")) {
-        marker.model.scale = modelScale;
+        if (alt>200) //dahua cam
+          marker.model.scale = modelScale;
+        else
+          marker.model.scale = 5;
       }
       //---------------------------------------------------------------//
 

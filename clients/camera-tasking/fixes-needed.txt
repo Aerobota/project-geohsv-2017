@@ -1,0 +1,2 @@
+- Fix SOS not starting issue
+- Fix camera orientation not updating in client
