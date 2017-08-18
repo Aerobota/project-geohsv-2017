@@ -1,5 +1,6 @@
 function init() {
 
+  // var hostName = "botts-geo.com";
   var hostName = "localhost";
 
   var startTime = "now";
@@ -40,16 +41,25 @@ function init() {
 
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
   //----- GPS TASKING SOURCES ---------------------------------------------------------------------------------------------//
-  var tasker01 = addGPSTaskSource("taskSrc1", "GPS Task Source 001", "GPS Target", "urn:osh:sim:gps01-sos", "GPS_Target.glb");
-  var tasker02 = addGPSTaskSource("taskSrc2", "GPS Task Source 002", "GPS Green", "urn:osh:sim:gps02-sos", "GPS_Green.glb");
+  // var tasker01 = addGPSTaskSource("taskSrc1", "GPS Task Source 001", "GPS Target", "urn:osh:sim:gps01-sos", "GPS_Target.glb");
+  // var tasker02 = addGPSTaskSource("taskSrc2", "GPS Task Source 002", "GPS Green", "urn:osh:sim:gps02-sos", "GPS_Green.glb");
   // var tasker03 = addGPSTaskSource("taskSrc3", "GPS Task Source 003", "GPS Red", "urn:osh:sim:gps03-sos", "GPS_Red.glb");
-  var tasker03 = addAndroidPhone("android01", "Mike's Nexus", "urn:android:device:89845ed469b7edc7-sos", null,0);
+  // var tasker03 = addAndroidPhone("android01", "Mike's Nexus", "urn:android:device:89845ed469b7edc7-sos", null,0);
+
+  ////// GeoHSV Demo  /////////////////////////////////////////////////////////////////////////////////////////////////
+  var tasker01 = addAndroidPhone("alexNexus5x", "Officer Robin 1", "urn:android:device:cac2076d70a6090f-sos", null,0);
+  // var tasker02 = addAndroidPhone("alexNexus5", "Officer Robin 2", "urn:android:device:a0e0eac2fea3f614-sos", null,0);
+  var tasker03 = addAndroidPhone("mikePixel", "Officer Botts 1", "urn:android:device:e7e86a0c6539c18a-sos", null,0);
+  // var tasker04 = addAndroidPhone("mikeNexus5", "Officer Botts 2", "urn:android:device:89845ed469b7edc7-sos", null,0);
+  var tasker05 = addAndroidPhone("ianHtc10", "Officer Patterson", "urn:android:device:1aea89f8ebbd4b09-sos", null,0);
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 
 
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
   //----- PTZ PRESETS ---------------------------------------------------------------------------------------------------------------------//
-  var dahua01Presets = ["Home","Pos1","Pos1Zoom1","Pos2","Pos2Zoom1","Pos2Zoom2","Pos3","Pos3Zoom1","Pos4","Pos4Zoom1","Pos5","Pos5Zoom 1"];
+  // var dahua01Presets = ["Home","Pos1","Pos1Zoom1","Pos2","Pos2Zoom1","Pos2Zoom2","Pos3","Pos3Zoom1","Pos4","Pos4Zoom1","Pos5","Pos5Zoom 1"];
+  var dahua01Presets = ["Home","Pos1","Pos2","Pos3","Pos4","Pos5"];
   // var axis01Presets = ["Home","Pos1","Pos2","Pos3"];
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 
@@ -57,7 +67,8 @@ function init() {
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
   //----- TASKERS ----------------------------------------------------------------------------------//
   // var dahua01Taskers = [tasker01.dataSources[0], tasker02.dataSources[0], tasker03.dataSources[0]];
-  var dahua01Taskers = [tasker01.dataSources[0], tasker02.dataSources[0], tasker03.dataSources[1]];
+  // var dahua01Taskers = [tasker01.dataSources[0]];
+  var dahua01Taskers = [tasker01.dataSources[1], tasker03.dataSources[1], tasker05.dataSources[1]];
   // var axis01Taskers = [tasker01.dataSources[0], tasker02.dataSources[0], tasker03.dataSources[0]];
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 
@@ -66,8 +77,9 @@ function init() {
   //----- PTZ CAMS ------------------------------------------------------------------------------------------------------------------------------------//
   // addDahuaCam(entityID, entityName, offeringID, spsID, headingOffset, dahuaPresets, dahuaTaskers, rotDir)
 
-  // addDahuaCam("dahua01", "Dahua PTZ 01", "urn:office:dahua:01-sos", "urn:dahua:cam:1G0215CGAK00046", 24.0, dahua01Presets, dahua01Taskers, -1.0);
-  addDahuaCam("dahua02", "Dahua PTZ 02", "urn:cityhall:dahua:01-sos", "urn:dahua:cam:WT1J033A7PAN00005", 24.0, dahua01Presets, dahua01Taskers, -1.0);
+  addDahuaCam("dahua01", "Dahua PTZ 01", "urn:cityhall:dahua:01-sos", "urn:dahua:cam:WT1J033A7PAN00005", 24.0, dahua01Presets, dahua01Taskers, -1.0);
+  // addDahuaCam("dahua02", "Dahua PTZ 02", "urn:office:dahua:02-sos", "urn:dahua:cam:1G0215CGAK00046", 24.0, dahua02Presets, dahua02Taskers, -1.0);
+  // addDahuaCam("dahua02", "Dahua PTZ 02", "urn:cityhall", "urn:dahua:cam:WT1J033A7PAN00005", 24.0, dahua02Presets, dahua02Taskers, -1.0);
   // addAxisCam("axis01", "Axis PTZ 01", "urn:office:axis:01-sos", "urn:axis:cam:00408CB95A55", 0.0, axis01Presets, axis01Taskers)
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 
@@ -459,7 +471,8 @@ function init() {
       var videoData = new OSH.DataReceiver.VideoH264("Video", {
           protocol : "ws",
           service: "SOS",
-          endpointUrl: hostName + ":8181/sensorhub/sos",
+          // endpointUrl: hostName + ":8181/sensorhub/sos",
+          endpointUrl: "botts-geo.com" + ":8181/sensorhub/sos",
           offeringID: offeringID,
           observedProperty: "http://sensorml.com/ont/swe/property/VideoFrame",
           startTime: startTime,
@@ -473,7 +486,8 @@ function init() {
       var locationData = new OSH.DataReceiver.LatLonAlt(entityName, {
           protocol : "ws",
           service: "SOS",
-          endpointUrl: hostName + ":8181/sensorhub/sos",
+          // endpointUrl: hostName + ":8181/sensorhub/sos",
+          endpointUrl: "botts-geo.com" + ":8181/sensorhub/sos",
           offeringID: offeringID,
           observedProperty: "http://sensorml.com/ont/swe/property/Location",
           startTime: startTime,
@@ -487,7 +501,8 @@ function init() {
       var attitudeData = new OSH.DataReceiver.OrientationQuaternion("Orientation", {
           protocol : "ws",
           service: "SOS",
-          endpointUrl: hostName + ":8181/sensorhub/sos",
+          // endpointUrl: hostName + ":8181/sensorhub/sos",
+          endpointUrl: "botts-geo.com" + ":8181/sensorhub/sos",
           offeringID: offeringID,
           observedProperty: "http://sensorml.com/ont/swe/property/OrientationQuaternion",
           startTime: startTime,
@@ -503,7 +518,8 @@ function init() {
           flirVideo = new OSH.DataReceiver.VideoMjpeg("FLIR Video", {
               protocol : "ws",
               service: "SOS",
-              endpointUrl: hostName + ":8181/sensorhub/sos",
+              // endpointUrl: hostName + ":8181/sensorhub/sos",
+              endpointUrl: "botts-geo.com" + ":8181/sensorhub/sos",
               offeringID: flirOfferingID,
               observedProperty: "http://sensorml.com/ont/swe/property/VideoFrame",
               startTime: startTime,

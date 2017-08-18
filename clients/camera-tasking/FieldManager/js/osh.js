@@ -6720,14 +6720,32 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
       var scene = this.viewer.scene;
       var viewer = this.viewer;
 
+      // var entity = this.viewer.entities.add({
+      //   label : {
+      //     show : false,
+      //     showBackground : true,
+      //     font : '12px monospace',
+      //     horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+      //     verticalOrigin : Cesium.VerticalOrigin.TOP,
+      //     pixelOffset : new Cesium.Cartesian2(15, 0)
+      //   }
+      // });
+
       var entity = this.viewer.entities.add({
+        point : {
+          show : true,
+          color : Cesium.Color.RED,
+          pixelSize : 8,
+          outlineColor : Cesium.Color.WHITE,
+          outlineWidth : 3
+        },
         label : {
           show : false,
           showBackground : true,
-          font : '14px monospace',
-          horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
-          verticalOrigin : Cesium.VerticalOrigin.TOP,
-          pixelOffset : new Cesium.Cartesian2(15, 0)
+          font : '12px monospace',
+          horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
+          verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+          pixelOffset : new Cesium.Cartesian2(0, 65)
         }
       });
 
@@ -6777,13 +6795,11 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
             /////////////////////////////////////////////////////////////////////////////////////////////
 
             entity.position = cartesian;
-            entity.label.show = true;
-            entity.label.text =
-            'Lon: ' + longitudeString.slice(0,9) + '\u00B0' +
-            '\nLat: ' + latitudeString.slice(0,8) + '\u00B0' +
-            '\nAlt: ' + alt.toFixed(3) + ' m';
-            // '\nAlt: ' + alt.toString.slice(0,6) + ' m';
-
+            // entity.label.show = true;
+            // entity.label.text =
+            // 'Lon: ' + longitudeString.slice(0,9) + '\u00B0' +
+            // '\nLat: ' + latitudeString.slice(0,8) + '\u00B0' +
+            // '\nAlt: ' + alt.toFixed(3) + ' m';
           });
         }
         else
@@ -6792,6 +6808,26 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
         }
 
       }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+
+      infoHandler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+      infoHandler.setInputAction(function(click) {
+        var pickedObject = scene.pick(click.position);
+        if (Cesium.defined(pickedObject) && (pickedObject.id.id === entity.id)) {
+          var entCart = Cesium.Cartographic.fromCartesian(entity.position._value);
+          var entLon = Cesium.Math.toDegrees(entCart.longitude).toFixed(14);
+          var entLat = Cesium.Math.toDegrees(entCart.latitude).toFixed(14);
+          entity.label.show = true;
+          entity.label.show = true;
+          entity.label.text =
+          'Lat:' + entLat.slice(0,9) + '\u00B0' +
+          '\nLon:' + entLon.slice(0,9) + '\u00B0';
+        }
+        else {
+          entity.label.show = false;
+        }
+        // console.log("pickedId: " + pickedObject.id.id);
+        // console.log("entityId: " + entity.id);
+      }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
       /////////////////////////////////////////////////////////////////////////
 
 	    var self = this;
