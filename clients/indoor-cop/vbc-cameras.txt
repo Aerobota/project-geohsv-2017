@@ -1,0 +1,22 @@
+
+
+- 177: Q6035, South Hall Catwalk, South, looking south at 0, symmetrical to 180
+- 180: Q6035, South Hall Catwalk, North, looking south-east at 0, in front of double door north of loading bays
+- 185: M5013, South Hall, corridor behind ballrooms, looking north-west at 0
+- 190: M5013, South Hall, ball rooms, looking east at 0
+- 195: M5013, South Hall, ball rooms, looking east at 0
+
+all PTZ
+
+
+
+UWB 
+---
+
+A0: south-west corner
+A1: south-east corner (south door)
+A2: north-west corner
+
+
+A0-A2: 11.9m
+A0-A1: 7.9m
