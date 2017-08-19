@@ -18,7 +18,6 @@ dependencies {
   compile 'org.sensorhub:sensorhub-driver-videocam:[0.1,2.0)'
   compile 'org.sensorhub:sensorhub-driver-rtpcam:[0.1,2.0)'
   compile 'org.sensorhub:sensorhub-driver-mavlink:[0.1,2.0)'
-  //compile 'org.sensorhub:sensorhub-driver-trupulse:[0.1,2.0)'
 }
 
 distributions {
