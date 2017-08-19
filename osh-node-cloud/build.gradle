@@ -14,6 +14,8 @@ dependencies {
   compile 'org.sensorhub:sensorhub-service-video:[0.1,2.0)'
   compile 'org.sensorhub:sensorhub-driver-fakeweather:[0.1,2.0)'
   compile 'org.sensorhub:sensorhub-driver-dahua:[0.1,2.0)'
+  compile 'org.sensorhub:sensorhub-driver-trupulse:[0.1,2.0)'
+  compile 'org.sensorhub:sensorhub-process-geoloc:[0.1,2.0)'
 }
 
 distributions {

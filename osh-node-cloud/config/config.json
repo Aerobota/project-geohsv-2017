@@ -47,6 +47,15 @@
         "maxFois": 10,
         "Offering ID": "urn:osh:cityhall",
         "enabled": true
+      },
+      {
+        "objClass": "org.sensorhub.impl.service.sos.StreamProcessProviderConfig",
+        "processID": "d2df996d-473f-4ec2-a13e-c79657f4d080",
+        "hiddenOutputs": [],
+        "liveDataTimeout": 3600.0,
+        "maxFois": 10,
+        "Offering ID": "urn:lasertech:trupulse360:target",
+        "enabled": true
       }
     ],
     "dataConsumers": [],
@@ -69,8 +78,8 @@
     },
     "ogcCapabilitiesInfo": {
       "objClass": "org.sensorhub.impl.service.ogc.OGCServiceConfig$CapabilitiesInfo",
-      "title": "Field Node SOS Server",
-      "description": "SOS hosting all data collected from local sensors and UAV",
+      "title": "GeoHSV Outdoor Demo SOS Server",
+      "description": "SOS hosting all data collected from outdoor sensors and UAVs",
       "serviceProvider": {
         "objClass": "org.vast.util.ResponsibleParty",
         "individualName": "Alex Robin",
@@ -147,9 +156,9 @@
       "objClass": "org.sensorhub.api.sensor.PositionConfig",
       "location": {
         "objClass": "org.sensorhub.api.sensor.PositionConfig$LLALocation",
-        "lat": 34.564,
-        "lon": -86.324,
-        "alt": 0.0
+        "lat": 34.728587,
+        "lon": -86.586514,
+        "alt": 203.0
       }
     },
     "exclusiveControl": true,
@@ -174,6 +183,120 @@
     "id": "8d6901d7-7d8a-449a-a61e-c35a96c53f98",
     "moduleClass": "org.sensorhub.impl.persistence.GenericStreamStorage",
     "name": "CityHall Camera Storage",
+    "autoStart": false
+  },
+  {
+    "objClass": "org.sensorhub.process.cam.CamPtzGeoPointingConfig",
+    "camSensorUID": "urn:dahua:cam:WT1J033A7PAN00005",
+    "fixedCameraPosLLA": [
+      34.728587,
+      -86.586514,
+      203.0
+    ],
+    "fixedCameraRotENU": [
+      0.0,
+      0.0,
+      66.0
+    ],
+    "cameraMinFocalLength": 4.5,
+    "cameraMaxFocalLength": 135.0,
+    "cameraSensorSize": 8.47,
+    "desiredViewSize": 60.0,
+    "dataSources": [
+      {
+        "objClass": "org.sensorhub.api.processing.StreamingDataSourceConfig",
+        "producerID": "urn:osh:client:locationsource",
+        "decimFactor": 0,
+        "inputConnections": [
+          {
+            "objClass": "org.sensorhub.api.processing.DataSourceConfig$InputLinkConfig",
+            "source": "output0",
+            "destination": "targetLocation"
+          }
+        ]
+      }
+    ],
+    "id": "5cb4569c-9e08-4fa1-1458-fead58900051",
+    "moduleClass": "org.sensorhub.process.cam.CamPtzGeoPointingProcess",
+    "name": "Camera Geo-Pointing Process",
+    "autoStart": false
+  },
+  {
+    "objClass": "org.sensorhub.impl.process.trupulse.TargetGeolocConfig",
+    "dataSources": [
+      {
+        "objClass": "org.sensorhub.api.processing.StreamingDataSourceConfig",
+        "producerID": "urn:android:device:cac2076d70a6090f",
+        "decimFactor": 0,
+        "inputConnections": [
+          {
+            "objClass": "org.sensorhub.api.processing.DataSourceConfig$InputLinkConfig",
+            "source": "gps_data",
+            "destination": "sensorLocation"
+          }
+        ]
+      },
+      {
+        "objClass": "org.sensorhub.api.processing.StreamingDataSourceConfig",
+        "producerID": "urn:lasertech:trupulse360:cac2076d70a6090f",
+        "decimFactor": 0,
+        "inputConnections": [
+          {
+            "objClass": "org.sensorhub.api.processing.DataSourceConfig$InputLinkConfig",
+            "source": "rangeData",
+            "destination": "rangeData"
+          }
+        ]
+      }
+    ],
+    "id": "d2df996d-473f-4ec2-a13e-c79657f4d080",
+    "moduleClass": "org.sensorhub.impl.process.trupulse.TargetGeolocProcess",
+    "name": "TruPulse Target Geolocation Process",
+    "autoStart": false
+  },
+  {
+    "objClass": "org.sensorhub.impl.service.sps.SPSServiceConfig",
+    "enableTransactional": false,
+    "connectors": [
+      {
+        "objClass": "org.sensorhub.impl.service.sps.SensorConnectorConfig",
+        "sensorID": "ef2814a2-abfc-4291-9819-dab5c554b6fa",
+        "hiddenCommands": [],
+        "Offering ID": "urn:dahua:cam:WT1J033A7PAN00005",
+        "enabled": true
+      }
+    ],
+    "security": {
+      "objClass": "org.sensorhub.api.security.SecurityConfig",
+      "enableAccessControl": false,
+      "requireAuth": true
+    },
+    "ogcCapabilitiesInfo": {
+      "objClass": "org.sensorhub.impl.service.ogc.OGCServiceConfig$CapabilitiesInfo",
+      "title": "GeoHSV Outdoor Demo SPS Server",
+      "description": "SPS for tasking outdoor cameras",
+      "serviceProvider": {
+        "objClass": "org.vast.util.ResponsibleParty",
+        "individualName": "Alex Robin",
+        "organizationName": "Sensiasoft",
+        "positionName": "CTO",
+        "voiceNumbers": [],
+        "faxNumbers": [],
+        "deliveryPoints": [],
+        "city": "Huntsville",
+        "administrativeArea": "AL",
+        "country": "USA",
+        "emails": [],
+        "hrefPresent": false
+      }
+    },
+    "enableHttpGET": true,
+    "enableHttpPOST": true,
+    "enableSOAP": true,
+    "endPoint": "/sps",
+    "id": "50101bc9-4fa9-4dc7-bdb6-de76ef4d6c7d",
+    "moduleClass": "org.sensorhub.impl.service.sps.SPSService",
+    "name": "SPS Service",
     "autoStart": false
   }
 ]
