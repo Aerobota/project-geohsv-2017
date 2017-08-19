@@ -8980,7 +8980,7 @@ OSH.UI.PtzTaskingView = OSH.UI.View.extend({
         for(var i in taskersArr) {
             var option = document.createElement("option");
             option.text = taskersArr[i].name;
-            option.value = taskersArr[i].properties.offeringID;
+            option.data = taskersArr[i].properties;
             selectTag.add(option);
 
             // this.taskSrcIds.push(taskersArr[i].properties.offeringID); // Add each source ID to this array
@@ -9016,24 +9016,26 @@ OSH.UI.PtzTaskingView = OSH.UI.View.extend({
     onSelectedSources : function(event) {
         var serverTag = document.querySelector('#'+this.rootTag.id+ "  .ptz-right  .ptz-task-sources  .ptz-sources");
         var option = serverTag.options[serverTag.selectedIndex];
-        var sourceId = option.value; // this is the SOS offering ID (e.g. urn:osh:sim:gps01-sos)
-
+        var source = option.value;
         this.selectedSource = true;
 
         // If task source is selected from drop-down, set preset option to "Select a Preset" (index 0)
         var presetServerTag = document.querySelector('#'+this.rootTag.id+ "  .ptz-right  .ptz-select-style  .ptz-presets");
         presetServerTag.selectedIndex = 0;
-
-        console.log("sourceId: " + sourceId);
+        
         // if the GetResult websocket is open, close it!
         if (getGetResultWsConnectionStatus() == WebSocket.OPEN) {
           closeGetResultWsConnection(); // closes websocket
         }
-        if (sourceId === "mouseclick") {
+        if (source === "mouseclick") {
+          console.log("tasking with mouse clicks");
           enableClickToTask(); // Only enable click-to-task if mouseclick is selected
         } else {
           disableClickToTask(); // If Map Double-Click is not selected, disable click-to-task
-          makeGetResultWsConnection(sourceId); // create connection to selected data source; pass in SOS offering ID
+          console.log("tasking from location source");
+          var offeringID = option.data.offeringID;
+          var obsURI = option.data.observedProperty;
+          makeGetResultWsConnection(offeringID, obsURI); // create connection to selected data source; pass in SOS offering ID
         }
     },
 

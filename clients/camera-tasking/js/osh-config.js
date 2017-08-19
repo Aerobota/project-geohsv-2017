@@ -52,6 +52,7 @@ function init() {
   //var tasker03 = addAndroidPhone("mikePixel", "Officer Botts 1", "urn:android:device:e7e86a0c6539c18a-sos", null,0);
   var tasker04 = addAndroidPhone("mikeNexus5", "Officer Botts 2", "urn:android:device:89845ed469b7edc7-sos", null,0);
   //var tasker05 = addAndroidPhone("ianHtc10", "Officer Patterson", "urn:android:device:1aea89f8ebbd4b09-sos", null,0);
+  var tasker06 = addLRF("mikeLRF", "Officer LRF", "urn:lasertech:trupulse360:target");
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 
@@ -69,7 +70,7 @@ function init() {
   // var dahua01Taskers = [tasker01.dataSources[0], tasker02.dataSources[0], tasker03.dataSources[0]];
   // var dahua01Taskers = [tasker01.dataSources[0]];
   //var dahua01Taskers = [tasker01.dataSources[1], tasker02.dataSources[1], tasker03.dataSources[1], tasker04.dataSources[1], tasker05.dataSources[1]];
-  var dahua01Taskers = [tasker02.dataSources[1], tasker04.dataSources[1]];
+  var dahua01Taskers = [tasker02.dataSources[1], tasker04.dataSources[1], tasker06.dataSources[0]];
   // var axis01Taskers = [tasker01.dataSources[0], tasker02.dataSources[0], tasker03.dataSources[0]];
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 
@@ -659,6 +660,65 @@ function init() {
 
       // var markerMenu = new OSH.UI.ContextMenu.CircularMenu({id:mapMenuId+entityID, groupId: menuGroupId, items: menuItems});
       var treeMenu = new OSH.UI.ContextMenu.StackMenu({id: treeMenuId+entityID, groupId: menuGroupId, items: menuItems});
+
+      return entity;
+  }
+
+  function addLRF(entityID, entityName, offeringID) {
+    console.log("Adding LRF " + entityName);
+
+      // create data sources
+      var locationData = new OSH.DataReceiver.LatLonAlt(entityName, {
+          protocol : "ws",
+          service: "SOS",
+          endpointUrl: "botts-geo.com" + ":8181/sensorhub/sos",
+          offeringID: offeringID,
+          observedProperty: "http://sensorml.com/ont/swe/property/TargetLocation",
+          startTime: startTime,
+          endTime: endTime,
+          replaySpeed: "1",
+          syncMasterTime: sync,
+          bufferingTime: 500,
+          timeOut: dataStreamTimeOut
+      });
+
+      // create entity
+      var entity = {
+          id: entityID,
+          name: entityName,
+          dataSources: [locationData]
+      };
+
+      dataReceiverController.addEntity(entity);
+
+      // add item to tree
+      treeItems.push({
+          entity : entity,
+          path: "LRF",
+          treeIcon : "images/blue_key.png",
+          contextMenuId: treeMenuId + entity.id
+      })
+
+      // add marker to map
+      //leafletMapView.addViewItem({
+      mapView.addViewItem({
+          name: entityName,
+          entityId : entity.id,
+          styler : new OSH.UI.Styler.PointMarker({
+              locationFunc : {
+                  dataSourceIds : [locationData.getId()],
+                  handler : function(rec) {
+                      return {
+                          x : rec.lon,
+                          y : rec.lat,
+                          z : rec.alt
+                      };
+                  }
+              },
+              icon : "images/blue_key.png",
+              label : entityName
+          })
+      });
 
       return entity;
   }

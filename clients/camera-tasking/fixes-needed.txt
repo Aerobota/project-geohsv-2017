@@ -1,2 +1,4 @@
 - Fix SOS not starting issue
-- Fix camera orientation not updating in client
+- Fix dual output problem after sos restarts
+
+For now, locationsource sensor + corresponding storage needs to be removed after restarting the SOS server or the whole node
