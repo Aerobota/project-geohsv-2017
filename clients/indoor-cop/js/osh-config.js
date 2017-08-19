@@ -90,10 +90,10 @@ function init() {
     addAxisCam("axis4", "Cam - Ballroom 1", "urn:axis:cam:190", -86.590618, 34.725662, 90);
     addAxisCam("axis5", "Cam - Ballroom 2", "urn:axis:cam:195", -86.591025, 34.725376, 45);
 
-    addMotionSensor("motion1", "South East", "urn:osh:client:c99a7368-1bc1-4f00-82ce-cf0072ffbec5", -86.590321, 34.725591);
-    addMotionSensor("motion1", "South West", null, -86.590970, 34.725154);
-    addMotionSensor("motion1", "North East", null, -86.591303, 34.726620);
-    addMotionSensor("motion1", "North West", null, -86.591934, 34.726383);
+    addMotionSensor("motion1", "Motion - South East", "urn:osh:client:c99a7368-1bc1-4f00-82ce-cf0072ffbec5", -86.590321, 34.725591);
+    addMotionSensor("motion1", "Motion - South West", null, -86.590970, 34.725154);
+    addMotionSensor("motion1", "Motion - North East", null, -86.591303, 34.726620);
+    addMotionSensor("motion1", "Motion - North West", null, -86.591934, 34.726383);
 
     addDoorSensor("door1", "Access North East", "urn:osh:client:94dc0797-f0ca-497c-893d-5fb0ce350711", -86.591568, 34.726743);
     addDoorSensor("door2", "Loading Dock 1", null, -86.592039, 34.726109);
