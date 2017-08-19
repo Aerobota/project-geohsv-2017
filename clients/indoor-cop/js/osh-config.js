@@ -1,18 +1,18 @@
 function init() {
 
-    //var hostName = "botts-geo.com:8181";
+    var stHostName = "botts-geo.com:8181";
     var hostName = "localhost:8181";
 
     // time settings
     // for real-time
-    /*var startTime = "now";
+    var startTime = "now";
     var endTime = "2080-01-01T00:00:00Z";
-    var sync = false;*/
+    var sync = false;
     
     // for replay
-    var startTime = "2017-08-17T22:37:21.005Z";
+    /*var startTime = "2017-08-17T22:37:21.005Z";
     var endTime = "2017-08-17T22:47:15.042Z";
-    var sync = true;
+    var sync = true;*/
 
     var replaySpeed = "1";
     var bufferingTime = 100;
@@ -62,7 +62,7 @@ function init() {
     });
 
     // to get cursor coordinates
-    cesiumView.viewer.canvas.addEventListener('click', function(e) {
+    /*cesiumView.viewer.canvas.addEventListener('click', function(e) {
         var mousePosition = new Cesium.Cartesian2(e.clientX, e.clientY);
         var ellipsoid = cesiumView.viewer.scene.globe.ellipsoid;
         var cartesian = cesiumView.viewer.camera.pickEllipsoid(mousePosition, ellipsoid);
@@ -72,7 +72,7 @@ function init() {
     	    var lat = Cesium.Math.toDegrees(cartographic.latitude).toFixed(6);
 		alert(lon + ', ' + lat);
         }
-    }, false);
+    }, false);*/
 
     
     // --------------------------------------------------------------//
@@ -90,10 +90,18 @@ function init() {
     addAxisCam("axis4", "Cam - Ballroom 1", "urn:axis:cam:190", -86.590618, 34.725662, 90);
     addAxisCam("axis5", "Cam - Ballroom 2", "urn:axis:cam:195", -86.591025, 34.725376, 45);
 
-    //addMotionSensor
-    //addDoorSensor
+    addMotionSensor("motion1", "South East", "urn:osh:client:c99a7368-1bc1-4f00-82ce-cf0072ffbec5", -86.590321, 34.725591);
+    addMotionSensor("motion1", "South West", null, -86.590970, 34.725154);
+    addMotionSensor("motion1", "North East", null, -86.591303, 34.726620);
+    addMotionSensor("motion1", "North West", null, -86.591934, 34.726383);
 
-    //addUwbTag("uwb1", "VIP Tracker", "urn:osh:sensor:trek1000:EVB110870-sos");
+    addDoorSensor("door1", "Access North East", "urn:osh:client:94dc0797-f0ca-497c-893d-5fb0ce350711", -86.591568, 34.726743);
+    addDoorSensor("door2", "Loading Dock 1", null, -86.592039, 34.726109);
+    addDoorSensor("door3", "Loading Dock 2", null, -86.591961, 34.726008);
+    addDoorSensor("door4", "Access South West 1", null, -86.591290, 34.725343);
+    addDoorSensor("door5", "Access South West 2", null, -86.591085, 34.725119);
+
+    addUwbTag("uwb1", "VIP Tracker", "urn:osh:sensor:trek1000:EVB110870-sos");
 
 
     // --------------------------------------------------------------//
@@ -124,7 +132,7 @@ function init() {
 
     // start streams and display
     dataSourceController.connectAll();
-    cesiumView.viewer.flyTo(vbc, {offset: new Cesium.HeadingPitchRange(Cesium.Math.toRadians(0), Cesium.Math.toRadians(-90), 500)});
+    cesiumView.viewer.flyTo(vbc, {offset: new Cesium.HeadingPitchRange(Cesium.Math.toRadians(-90), Cesium.Math.toRadians(-90), 500)});
 
     //initWFST();
 
@@ -381,6 +389,190 @@ function init() {
         
         return entity;
     }
+
+
+    function addMotionSensor(entityID, entityName, offeringID, lon, lat) {
+        
+        // create data sources
+        var sensorData = new OSH.DataReceiver.JSON("Motion", {
+            protocol : "ws",
+            service: "SOS",
+            endpointUrl: stHostName + "/sensorhub/sos",
+            offeringID: offeringID,
+            observedProperty: "http://sensorml.com/ont/swe/property/MotionSensor",
+            startTime: startTime,
+            endTime: endTime,
+            replaySpeed: "1",
+            syncMasterTime: sync,
+            bufferingTime: bufferingTime,
+            timeOut: dataStreamTimeOut
+        });
+        
+        // create entity
+        var entity = {
+            id: entityID,
+            name: entityName,
+            dataSources: [sensorData]
+        };
+        dataSourceController.addEntity(entity);
+        
+        // add item to tree
+        treeItems.push({
+            entity : entity,
+            path: "Motion Sensors",
+            treeIcon : "images/motion-on.png"
+        })
+        
+        // add marker to map
+        cesiumView.addViewItem({
+            name: entityName,
+            entityId : entity.id,
+            styler : new OSH.UI.Styler.PointMarker({
+                location : {
+                    x : lon,
+                    y : lat,
+                    z : 0
+                },
+                icon : 'images/motion-off.png',
+                iconFunc : {
+                   dataSourceIds: [sensorData.getId()],
+                   handler : function(rec,timeStamp) {
+                       if (rec.motion == 'active') {
+                           return 'images/motion-on.png'
+                       } else {
+                           return 'images/motion-off.png';
+                       }
+                   }
+                },
+                label: entityName
+            }),
+            contextMenuId: mapMenuId+entityID
+        });
+        
+        return entity;
+    }
+
+
+    function addDoorSensor(entityID, entityName, offeringID, lon, lat) {
+        
+        // create data sources
+        var sensorData = new OSH.DataReceiver.JSON("Door", {
+            protocol : "ws",
+            service: "SOS",
+            endpointUrl: stHostName + "/sensorhub/sos",
+            offeringID: offeringID,
+            observedProperty: "http://sensorml.com/ont/swe/property/ContactSensor",
+            startTime: startTime,
+            endTime: endTime,
+            replaySpeed: "1",
+            syncMasterTime: sync,
+            bufferingTime: bufferingTime,
+            timeOut: dataStreamTimeOut
+        });
+        
+        // create entity
+        var entity = {
+            id: entityID,
+            name: entityName,
+            dataSources: [sensorData]
+        };
+        dataSourceController.addEntity(entity);
+        
+        // add item to tree
+        treeItems.push({
+            entity : entity,
+            path: "Door Sensors",
+            treeIcon : "images/door-closed.png"
+        })
+        
+        // add marker to map
+        cesiumView.addViewItem({
+            name: entityName,
+            entityId : entity.id,
+            styler : new OSH.UI.Styler.PointMarker({
+                location : {
+                    x : lon,
+                    y : lat,
+                    z : 0
+                },
+                orientation : {
+                    heading : 90
+                },
+                icon : 'images/door-closed.png',
+                iconFunc : {
+                   dataSourceIds: [sensorData.getId()],
+                   handler : function(rec,timeStamp) {
+                       if (rec.contact == 'open') {
+                           return 'images/door-open.png'
+                       } else {
+                           return 'images/door-closed.png';
+                       }
+                   }
+                },
+                label: entityName
+            }),
+            contextMenuId: mapMenuId+entityID
+        });
+        
+        return entity;
+    }
+
+
+    function addUwbTag(entityID, entityName, offeringID) {
+        
+        // create data sources
+        var locationData = new OSH.DataReceiver.JSON("UWB", {
+            protocol : "ws",
+            service: "SOS",
+            endpointUrl: hostName + "/sensorhub/sos",
+            offeringID: offeringID,
+            observedProperty: "http://sensorml.com/ont/swe/property/LocationXYZ",
+            startTime: startTime,
+            endTime: endTime,
+            replaySpeed: "1",
+            syncMasterTime: sync,
+            bufferingTime: bufferingTime,
+            timeOut: dataStreamTimeOut
+        });
+        
+        // create entity
+        var entity = {
+            id: entityID,
+            name: entityName,
+            dataSources: [locationData]
+        };
+        dataSourceController.addEntity(entity);
+        
+        // add item to tree
+        treeItems.push({
+            entity : entity,
+            path: "Indoor Positioning",
+            treeIcon : "images/tree/blue_key.png"
+        })
+        
+        // add marker to map
+        cesiumView.addViewItem({
+            name: entityName,
+            entityId : entity.id,
+            styler : new OSH.UI.Styler.PointMarker({
+                locationFunc : {
+                   dataSourceIds: [locationData.getId()],
+                   handler : function(rec,timeStamp) {
+                       return {
+                           x : rec.x,
+                           y : rec.y,
+                           z : 0
+                       }
+                   }
+                },
+                icon : 'images/tree/blue_key.png',
+                label: entityName
+            })
+        });
+        
+        return entity;
+    }
+
 
 
     function initWFST() {
