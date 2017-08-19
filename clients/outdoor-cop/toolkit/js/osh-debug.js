@@ -100,7 +100,7 @@
  * @namespace {object} OSH
  */
 var OSH = {
-	version: '1.2'
+	version: '1.3'
 };
 
 window.OSH = OSH;
@@ -3487,22 +3487,22 @@ OSH.UI.View = BaseClass.extend({
 
         this.dataSourceId = -1;
         // sets dataSourceId
-        if(typeof(options) != "undefined" && typeof(options.dataSourceId) != "undefined") {
+        if(typeof(options) !== "undefined" && typeof(options.dataSourceId) !== "undefined") {
             this.dataSourceId = options.dataSourceId;
         }
 
-        if(typeof(options) != "undefined" && typeof(options.entityId) != "undefined") {
+        if(typeof(options) !== "undefined" && typeof(options.entityId) !== "undefined") {
             this.entityId = options.entityId;
         }
         this.css = "";
 
         this.cssSelected = "";
 
-        if(typeof(options) != "undefined" && typeof(options.css) != "undefined") {
+        if(typeof(options) !== "undefined" && typeof(options.css) !== "undefined") {
             this.css = options.css;
         }
 
-        if(typeof(options) != "undefined" && typeof(options.cssSelected) != "undefined") {
+        if(typeof(options) !== "undefined" && typeof(options.cssSelected) !== "undefined") {
             this.cssSelected = options.cssSelected;
         }
 
@@ -3512,7 +3512,7 @@ OSH.UI.View = BaseClass.extend({
 
     /**
      * Inits the view component.
-     * @param parentElement The parent html element object to attach/create the view
+     * @param parentElementDivId The parent html element object to attach/create the view
      * @param viewItems the list of items to add
      * @param options [TODO]
      * @memberof OSH.UI.View
@@ -3525,7 +3525,7 @@ OSH.UI.View = BaseClass.extend({
 
         var div = document.getElementById(parentElementDivId);
 
-        if (typeof(div) == "undefined" || div == null) {
+        if (typeof(div) === "undefined" || div === null) {
             document.body.appendChild(this.elementDiv);
             this.hide();
             this.container = document.body;
@@ -3536,21 +3536,21 @@ OSH.UI.View = BaseClass.extend({
 
         this.beforeAddingItems(options);
 
-        if (typeof (viewItems) != "undefined") {
+        if (typeof (viewItems) !== "undefined") {
             for (var i =0;i < viewItems.length;i++) {
                 this.addViewItem(viewItems[i]);
             }
         }
 
-        if(typeof (options) != "undefined") {
-            if(typeof (options.show) != "undefined") {
+        if(typeof (options) !== "undefined") {
+            if(typeof (options.show) !== "undefined") {
                 document.getElementById(this.divId).style.display = (options.show)? "block": "none";
             }
         }
         this.handleEvents();
 
         // observes the event associated to the dataSourceId
-        if(typeof(options) != "undefined" && typeof(options.dataSourceId) != "undefined") {
+        if(typeof(options) !== "undefined" && typeof(options.dataSourceId) !== "undefined") {
             OSH.EventManager.observe(OSH.EventManager.EVENT.DATA+"-"+options.dataSourceId, function (event) {
                 if (event.reset)
                     this.reset(); // on data stream reset
@@ -3596,12 +3596,12 @@ OSH.UI.View = BaseClass.extend({
      * @memberof OSH.UI.View
      */
     attachTo : function(divId) {
-        if(typeof this.elementDiv.parentNode != "undefined") {
+        if(typeof this.elementDiv.parentNode !== "undefined") {
             // detach from its parent
             this.elementDiv.parentNode.removeChild(this.elementDiv);
         }
         document.getElementById(divId).appendChild(this.elementDiv);
-        if(this.elementDiv.style.display == "none") {
+        if(this.elementDiv.style.display === "none") {
             this.elementDiv.style.display = "block";
         }
 
@@ -3702,8 +3702,8 @@ OSH.UI.View = BaseClass.extend({
                     
                     // we check selected dataSource only when the selected entity is not set
                     var selected = false;
-                    if (typeof self.selectedEntity != "undefined") {
-                        selected = (viewItem.entityId == self.selectedEntity);
+                    if (typeof self.selectedEntity !== "undefined") {
+                        selected = (viewItem.entityId === self.selectedEntity);
                     }
                     else {
                         selected = (self.selectedDataSources.indexOf(frozenDataSourceId) > -1);
@@ -3719,8 +3719,8 @@ OSH.UI.View = BaseClass.extend({
                 OSH.EventManager.observe(OSH.EventManager.EVENT.SELECT_VIEW, function(event) {
                     // we check selected dataSource only when the selected entity is not set
                     var selected = false;
-                    if (typeof event.entityId != "undefined") {
-                        selected = (viewItem.entityId == event.entityId);
+                    if (typeof event.entityId !== "undefined") {
+                        selected = (viewItem.entityId === event.entityId);
                     }
                     else {
                         selected = (event.dataSourcesIds.indexOf(frozenDataSourceId) > -1);
@@ -3753,7 +3753,7 @@ OSH.UI.View = BaseClass.extend({
         }.bind(this));
 
         OSH.EventManager.observe(OSH.EventManager.EVENT.ADD_VIEW_ITEM,function(event){
-            if(typeof event.viewId != "undefined" && event.viewId == this.id) {
+            if(typeof event.viewId !== "undefined" && event.viewId === this.id) {
                 this.addViewItem(event.viewItem);
             }
         }.bind(this));
@@ -3772,7 +3772,7 @@ OSH.UI.View = BaseClass.extend({
      * @memberof OSH.UI.View
      */
     selectDataView: function (dataSourcesIds,entityId) {
-        if(typeof this.dataSources != "undefined") {
+        if(typeof this.dataSources !== "undefined") {
             this.selectedDataSources = dataSourcesIds;
             // set the selected entity even if it is undefined
             // this is handled by the setData function
@@ -3791,7 +3791,7 @@ OSH.UI.View = BaseClass.extend({
      */
     getDataSourcesId: function() {
         var res = [];
-        if(this.dataSourceId != -1) {
+        if(this.dataSourceId !== -1) {
             res.push(this.dataSourceId);
         }
 
@@ -4261,16 +4261,6 @@ OSH.UI.Styler = BaseClass.extend({
 	},
 
 	/**
-	 * @param {string} dataSourceId the datasource id
-	 * @param {Object} data the data
-	 * @param {OSH.View} view the osh.view
-	 * @memberof OSH.UI.Styler
-	 * @instance
-	 */
-	setData : function(dataSourceId, data, view) {
-	},
-
-	/**
 	 * Gets the styler id.
 	 * @returns {string} the styler id
 	 * @memberof OSH.UI.Styler
@@ -4299,7 +4289,7 @@ OSH.UI.Styler = BaseClass.extend({
 	addFn : function(dataSourceIds, fn) {
 		for (var i = 0; i < dataSourceIds.length; i++) {
 			var dataSourceId = dataSourceIds[i];
-			if (typeof (this.dataSourceToStylerMap[dataSourceId]) == "undefined") {
+			if (typeof (this.dataSourceToStylerMap[dataSourceId]) === "undefined") {
 				this.dataSourceToStylerMap[dataSourceId] = [];
 			}
 			this.dataSourceToStylerMap[dataSourceId].push(fn);
@@ -5275,6 +5265,7 @@ OSH.UI.Nvd3CurveChartView = OSH.UI.View.extend({
         }
     }
 });
+
 /***************************** BEGIN LICENSE BLOCK ***************************
 
  The contents of this file are subject to the Mozilla Public License, v. 2.0.
@@ -6251,7 +6242,7 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 				icon : styler.icon,
 				label : styler.label,
 				timeStamp: timeStamp,
-				selected: ((typeof(options.selected) != "undefined")? options.selected : false)
+				selected: ((typeof(options.selected) !== "undefined")? options.selected : false)
 			});
 
 			this.stylerToObj[styler.getId()] = markerId;
@@ -6267,7 +6258,7 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 			color : styler.color,
 			icon : styler.icon,
 			timeStamp: timeStamp,
-			selected:((typeof(options.selected) != "undefined")? options.selected : false)
+			selected:((typeof(options.selected) !== "undefined")? options.selected : false)
 		});
 	},
 
@@ -6383,8 +6374,8 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
                 })
             });*/
     	    
-    	    if (this.imageDrapingPrimitive == null || snapshot) {    	        
-    	        if (this.imageDrapingPrimitive == null)
+    	    if (this.imageDrapingPrimitive === null || snapshot) {
+    	        if (this.imageDrapingPrimitive === null)
     	            this.imageDrapingPrimitive = {};
     	        
     	        var promise = Cesium.sampleTerrain(this.viewer.terrainProvider, 11, [Cesium.Cartographic.fromDegrees(llaPos.x, llaPos.y)]);
@@ -6456,13 +6447,13 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 	    var self = this;
 	    Cesium.knockout.getObservable(this.viewer, '_selectedEntity').subscribe(function(entity) {
 	        //change icon
-	        if (Cesium.defined(entity)) {
+            if (Cesium.defined(entity)) {
 	        	var dataSrcIds = [];
 	        	var entityId;
 		    	for (var stylerId in self.stylerToObj) {
-		    		if(self.stylerToObj[stylerId] == entity._dsid) {
+		    		if(self.stylerToObj[stylerId] === entity._dsid) {
 		    			for(var i=0;i < self.stylers.length;i++) {
-			    			if(self.stylers[i].getId() == stylerId) {
+			    			if(self.stylers[i].getId() === stylerId) {
 			    				dataSrcIds = dataSrcIds.concat(self.stylers[i].getDataSourcesIds());
 			    				entityId = self.stylers[i].viewItem.entityId;
 				    			break;
@@ -6470,11 +6461,17 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 		    			}
 		    		}
 		    	}
-		    	OSH.EventManager.fire(OSH.EventManager.EVENT.SELECT_VIEW, {
+
+                OSH.EventManager.fire(OSH.EventManager.EVENT.SELECT_VIEW, {
                     dataSourcesIds: dataSrcIds,
-                    entityId : entityId
+                    entityId: entityId
                 });
-	        }
+            } else {
+                OSH.EventManager.fire(OSH.EventManager.EVENT.SELECT_VIEW, {
+                    dataSourcesIds: [],
+                    entityId: null
+                });
+            }
 	    }.bind(this));
 	},
 
@@ -6488,11 +6485,11 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 	addMarker : function(properties) {
 		
 		var imgIcon = 'images/cameralook.png';
-		if(properties.icon != null) {
+		if(properties.icon !== null) {
 			imgIcon = properties.icon;
 		}
 		var isModel = imgIcon.endsWith(".glb");
-		var name = properties.label;
+		var name = properties.label ? properties.label : "Selected Marker";
 		var geom;
 		
 		if (isModel)
@@ -6509,13 +6506,18 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 		}
 		else
 		{
+			var rot = 0;
+			if (properties.orientation != 'undefined')
+				rot = properties.orientation.heading;
 			geom = {
-				//name: properties.label,
+				name: name,
 				position : Cesium.Cartesian3.fromDegrees(0, 0, 0),
 				billboard : {
 					image : imgIcon,
-					rotation : Cesium.Math.toRadians(0),
-					horizontalOrigin : Cesium.HorizontalOrigin.CENTER
+					alignedAxis : Cesium.Cartesian3.UNIT_Z, // axis is in ENU frame, Z means rotation is from north
+					rotation : Cesium.Math.toRadians(rot),
+					horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
+                                        eyeOffset : new Cesium.Cartesian3(0,0,-1) // make sure icon always displays in front
 				}
 			};
 		}
@@ -6546,7 +6548,7 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
         	var marker =  this.markers[id];
         	
         	// get ground altitude if non specified
-        	if (typeof(alt) == "undefined" || isNaN(alt))
+        	if (typeof(alt) === "undefined" || isNaN(alt))
         	{
 	    		alt = this.getAltitude(lat, lon);
 	    		if (alt > 1)
@@ -6555,10 +6557,10 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 
     		// update position
         	var pos = Cesium.Cartesian3.fromDegrees(lon, lat, alt);
-    		marker.position = pos
+    		marker.position = pos;
     		    		
     		// update orientation
-    		if (typeof(orient) != "undefined")
+    		if (typeof(orient) !== "undefined")
     	    {
     			var DTR = Math.PI/180.;
     			var heading = orient.heading;
@@ -6569,7 +6571,7 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
     	    }
     		
     		// update icon or models
-    		//marker.billboard.image = imgIcon;
+    		marker.billboard.image = imgIcon;
     		
     		// zoom map if first marker update
     		if (this.first) {
@@ -6595,520 +6597,11 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 		var position = Cesium.Cartesian3.fromDegrees(lon, lat, 0, this.viewer.scene.globe.ellipsoid, new Cesium.Cartesian3());
 		var altitude = this.viewer.scene.globe.getHeight(Cesium.Ellipsoid.WGS84.cartesianToCartographic(position));
 
-		if (altitude == 'undefined' || altitude <= 0)
+		if (altitude === 'undefined' || altitude <= 0)
 			altitude = 0.1;
 		return altitude;
-	},
+	}
 });
-/***************************** BEGIN LICENSE BLOCK ***************************
-
- The contents of this file are subject to the Mozilla Public License, v. 2.0.
- If a copy of the MPL was not distributed with this file, You can obtain one
- at http://mozilla.org/MPL/2.0/.
-
- Software distributed under the License is distributed on an "AS IS" basis,
- WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
- for the specific language governing rights and limitations under the License.
-
- Copyright (C) 2015-2017 Mathieu Dhainaut. All Rights Reserved.
-
- Author: Mathieu Dhainaut <mathieu.dhainaut@gmail.com>
-
- ******************************* END LICENSE BLOCK ***************************/
-
-/**
- * @classdesc
- * @class
- * @type {OSH.UI.View}
- * @augments OSH.UI.View
- * @example
- var leafletMapView = new OSH.UI.LeafletView("",
- [{
-            styler :  pointMarker,
-            contextMenuId: circularContextMenuId,
-            name : "Android Phone GPS",
-            entityId : androidEntity.id
-        },
- {
-     styler : new OSH.UI.Styler.Polyline({
-         locationFunc : {
-             dataSourceIds : [androidPhoneGpsDataSource.getId()],
-             handler : function(rec) {
-                 return {
-                     x : rec.lon,
-                     y : rec.lat,
-                     z : rec.alt
-                 };
-             }
-         },
-         color : 'rgba(0,0,255,0.5)',
-         weight : 10,
-         opacity : .5,
-         smoothFactor : 1,
-         maxPoints : 200
-     }),
-     name : "Android Phone GPS Path",
-     entityId : androidEntity.id
- }]
- );
- */
-OSH.UI.LeafletView = OSH.UI.View.extend({
-    initialize: function (parentElementDivId, viewItems, options) {
-        this._super(parentElementDivId, viewItems, options);
-
-        var cssClass = document.getElementById(this.divId).className;
-        document.getElementById(this.divId).setAttribute("class", cssClass+" "+this.css);
-    },
-
-    /**
-     *
-     * @param $super
-     * @param options
-     * @instance
-     * @memberof OSH.UI.LeafletView
-     */
-    beforeAddingItems: function (options) {
-        // inits the map
-        this.initMap(options);
-        this.initEvents();
-    },
-
-    /**
-     * @instance
-     * @memberof OSH.UI.LeafletView
-     */
-    initEvents: function () {
-        // removes default right click
-        document.getElementById(this.divId).oncontextmenu = function (e) {
-            var evt = new Object({keyCode: 93});
-            if (e.preventDefault != undefined)
-                e.preventDefault();
-            if (e.stopPropagation != undefined)
-                e.stopPropagation();
-        };
-    },
-
-    //---------- MAP SETUP --------------//
-    /**
-     *
-     * @param options
-     * @instance
-     * @memberof OSH.UI.LeafletView
-     */
-    initMap: function (options) {
-
-        var initialView = {
-            location: new L.LatLng(0, 0),
-            zoom: 3
-        };
-        this.first = true;
-        var defaultLayers = this.getDefaultLayers();
-
-        var defaultLayer = defaultLayers[0].layer;
-
-        var baseLayers = {};
-        var overlays = {};
-
-        baseLayers[defaultLayers[0].name] = defaultLayers[0].layer;
-        overlays[defaultLayers[1].name] = defaultLayers[1].layer;
-
-        if (typeof(options) != "undefined") {
-            if (options.initialView) {
-                initialView = {
-                    location: new L.LatLng(options.initialView.lat, options.initialView.lon),
-                    zoom: options.initialView.zoom
-                }
-            }
-            // checks autoZoom
-            if (!options.autoZoomOnFirstMarker) {
-                this.first = false;
-            }
-
-            // checks overlayers
-            if (options.overlayLayers) {
-                overlays = options.overlayLayers;
-            }
-
-            // checks baseLayer
-            if (options.baseLayers) {
-                baseLayers = options.baseLayers;
-            }
-
-            // checks defaultLayer
-            if (options.defaultLayer) {
-                defaultLayer = options.defaultLayer;
-            }
-        }
-
-        // sets layers to map
-        this.map = new L.Map(this.divId, {
-            fullscreenControl: true,
-            layers: defaultLayer
-        });
-
-        L.control.layers(baseLayers, overlays).addTo(this.map);
-
-        this.map.setView(initialView.location, initialView.zoom);
-        //this.initLayers();
-        this.markers = {};
-        this.polylines = {};
-    },
-
-    /**
-     *
-     * @returns {{}}
-     * @instance
-     * @memberof OSH.UI.LeafletView
-     */
-    getDefaultBaseLayers: function () {
-        return {};
-    },
-
-    getDefaultLayers: function (options) {
-        var maxZoom = 22;
-        if (typeof(options) != "undefined" && options.maxZoom) {
-            maxZoom = options.maxZoom;
-        }
-        // copyrights
-        var mbAttr = 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-            mbUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-
-        var esriLink = '<a href="http://www.esri.com/">Esri</a>';
-        var esriWholink = 'i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
-
-        // leaflet layers
-        var esriLayer = L.tileLayer(
-            'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                attribution: '&copy; ' + esriLink + ', ' + esriWholink,
-                maxZoom: maxZoom,
-                maxNativeZoom: 19
-            });
-
-        var streets = L.tileLayer(mbUrl, {id: 'mapbox.streets', attribution: mbAttr, maxZoom: maxZoom});
-
-        return [{
-            name: "OSM Streets",
-            layer: streets
-        }, {
-            name: "Esri Satellite",
-            layer: esriLayer
-        }];
-    },
-
-    /**
-     * @instance
-     * @memberof OSH.UI.LeafletView
-     */
-    initLayers: function () {
-        // create the tile layer with correct attribution
-        var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-        var osmAttrib = 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-        var osm = new L.tileLayer(osmUrl, {
-            minZoom: 1,
-            maxZoom: 22,
-            attribution: osmAttrib
-        });
-        this.map.addLayer(osm);
-    },
-
-    //---------- FEATURES SETUP --------------//
-    addMarker: function (properties) {
-        //create marker
-        var marker = null;
-        if (properties.icon != null) {
-            var markerIcon = L.icon({
-                iconAnchor: properties.iconAnchor,
-                iconUrl: properties.icon
-            });
-
-            marker = L.marker([properties.lat, properties.lon], {
-                icon: markerIcon
-            });
-        } else {
-            marker = L.marker([properties.lat, properties.lon]);
-        }
-
-        marker.bindPopup(properties.name);
-
-        //TODO:for selected marker event
-        //this.marker.on('click',this.onClick.bind(this));
-
-        marker.addTo(this.map);
-        marker.setRotationAngle(properties.orientation);
-
-        var id = "view-marker-" + OSH.Utils.randomUUID();
-        this.markers[id] = marker;
-
-        if (this.first === true) {
-          this.map.setView(new L.LatLng(properties.lat, properties.lon), 19);
-          this.first = false;
-        }
-        var self = this;
-
-        marker._icon.id = id;
-
-        // adds onclick event
-        marker.on('click', function () {
-            var dataSourcesIds = [];
-            var entityId;
-            for (var stylerId in self.stylerToObj) {
-                if (self.stylerToObj[stylerId] == id) {
-                    var styler = self.stylerIdToStyler[stylerId];
-                    OSH.EventManager.fire(OSH.EventManager.EVENT.SELECT_VIEW,{
-                        dataSourcesIds: dataSourcesIds.concat(styler.getDataSourcesIds()),
-                        entityId : styler.viewItem.entityId
-                    });
-                    break;
-                }
-            }
-        });
-
-        document.getElementById(id).oncontextmenu = function (e) {
-            var evt = new Object({keyCode: 93});
-
-            if (e.preventDefault != undefined)
-                e.preventDefault();
-            if (e.stopPropagation != undefined)
-                e.stopPropagation();
-
-            // gets the corresponding styler
-            for(var stylerId in self.stylerToObj) {
-                if(self.stylerToObj[stylerId] == id) {
-                    OSH.EventManager.fire(OSH.EventManager.EVENT.CONTEXT_MENU+"-"+self.stylerIdToStyler[stylerId].viewItem.contextMenuId,{
-                        //TODO: values have to be provided by properties
-                        offsetX: -70,
-                        offsetY: -70,
-                        action : "show",
-                        x:OSH.Utils.getXCursorPosition(),
-                        y:OSH.Utils.getYCursorPosition(),
-                        drawLineTo:id
-                    });
-                    break;
-                }
-            }
-
-
-        }.bind(this);
-
-        return id;
-    },
-
-    /**
-     *
-     * @param properties
-     * @returns {string}
-     * @instance
-     * @memberof OSH.UI.LeafletView
-     */
-    addPolyline: function (properties) {
-        var polylinePoints = [];
-
-        for (var i = 0; i < properties.locations.length; i++) {
-            polylinePoints.push(new L.LatLng(properties.locations[i].y, properties.locations[i].x));
-        }
-
-        //create path
-        var polyline = new L.Polyline(polylinePoints, {
-            color: properties.color,
-            weight: properties.weight,
-            opacity: properties.opacity,
-            smoothFactor: properties.smoothFactor
-        }).addTo(this.map);
-
-        var id = "view-polyline-" + OSH.Utils.randomUUID();
-        this.polylines[id] = polyline;
-
-        return id;
-    },
-
-    /**
-     *
-     * @param styler
-     * @instance
-     * @memberof OSH.UI.LeafletView
-     */
-    updateMarker: function (styler) {
-        var markerId = 0;
-        if (!(styler.getId() in this.stylerToObj)) {
-            // adds a new marker to the leaflet renderer
-            markerId = this.addMarker({
-                lat: styler.location.y,
-                lon: styler.location.x,
-                orientation: styler.orientation.heading,
-                color: styler.color,
-                icon: styler.icon,
-                iconAnchor: styler.iconAnchor,
-                name: this.names[styler.getId()]
-            });
-            this.stylerToObj[styler.getId()] = markerId;
-        } else {
-            markerId = this.stylerToObj[styler.getId()];
-        }
-
-        var marker = this.markers[markerId];
-        // updates position
-        var lon = styler.location.x;
-        var lat = styler.location.y;
-
-        if (!isNaN(lon) && !isNaN(lat)) {
-            var newLatLng = new L.LatLng(lat, lon);
-            marker.setLatLng(newLatLng);
-        }
-
-
-        // updates orientation
-        if(typeof styler.orientation != "undefined") {
-            marker.setRotationAngle(styler.orientation.heading);
-        }
-
-        if (styler.icon != null && marker._icon.iconUrl != styler.icon) {
-            // updates icon
-            var markerIcon = L.icon({
-                iconAnchor: [16, 16],
-                iconUrl: styler.icon
-            });
-            marker.setIcon(markerIcon);
-        }
-    },
-
-    /**
-     *
-     * @param styler
-     * @instance
-     * @memberof OSH.UI.LeafletView
-     */
-    updatePolyline: function (styler) {
-        var polylineId = 0;
-
-        if (!(styler.getId() in this.stylerToObj)) {
-            // adds a new marker to the leaflet renderer
-            polylineId = this.addPolyline({
-                color: styler.color,
-                weight: styler.weight,
-                locations: styler.locations,
-                maxPoints: styler.maxPoints,
-                opacity: styler.opacity,
-                smoothFactor: styler.smoothFactor
-            });
-
-            this.stylerToObj[styler.getId()] = polylineId;
-        } else {
-            polylineId = this.stylerToObj[styler.getId()];
-        }
-
-        if (polylineId in this.polylines) {
-            var polyline = this.polylines[polylineId];
-
-            // removes the layer
-            this.map.removeLayer(polyline);
-
-            var polylinePoints = [];
-            for (var i = 0; i < styler.locations.length; i++) {
-                polylinePoints.push(new L.LatLng(styler.locations[i].y, styler.locations[i].x));
-            }
-
-            //create path
-            var polyline = new L.Polyline(polylinePoints, {
-                color: styler.color,
-                weight: styler.weight,
-                opacity: styler.opacity,
-                smoothFactor: styler.smoothFactor
-            }).addTo(this.map);
-
-            this.polylines[polylineId] = polyline;
-        }
-    },
-
-    /**
-     *
-     * @param $super
-     * @param parentElement
-     * @instance
-     * @memberof OSH.UI.LeafletView
-     */
-    attachTo:function(parentElement) {
-        this._super(parentElement);
-        // Fix leaflet bug when resizing the div parent container
-        this.map.invalidateSize();
-    },
-
-    /**
-     *
-     * @param $super
-     * @instance
-     * @memberof OSH.UI.LeafletView
-     */
-    onResize:function($super) {
-        this._super();
-        this.map.invalidateSize();
-    },
-});
-
-/***  little hack starts here ***/
-
-L.Map = L.Map.extend({
-    openPopup: function (popup) {
-        this._popup = popup;
-        return this.addLayer(popup).fire('popupopen', {
-            popup: this._popup
-        });
-    }
-});
-
-// Defines rotated marker
-(function () {
-    // save these original methods before they are overwritten
-    var proto_initIcon = L.Marker.prototype._initIcon;
-    var proto_setPos = L.Marker.prototype._setPos;
-
-    var oldIE = (L.DomUtil.TRANSFORM === 'msTransform');
-
-    L.Marker.addInitHook(function () {
-        var iconAnchor = this.options.icon.options.iconAnchor;
-        if (iconAnchor) {
-            iconAnchor = (iconAnchor[0] + 'px ' + iconAnchor[1] + 'px');
-        }
-        this.options.rotationOrigin = this.options.rotationOrigin || iconAnchor || 'center bottom';
-        this.options.rotationAngle = this.options.rotationAngle || 0;
-    });
-
-    L.Marker.include({
-        _initIcon: function () {
-            proto_initIcon.call(this);
-        },
-
-        _setPos: function (pos) {
-            proto_setPos.call(this, pos);
-
-            if (this.options.rotationAngle) {
-                this._icon.style[L.DomUtil.TRANSFORM + 'Origin'] = this.options.rotationOrigin;
-
-                if (oldIE) {
-                    // for IE 9, use the 2D rotation
-                    this._icon.style[L.DomUtil.TRANSFORM] = ' rotate(' + this.options.rotationAngle + 'deg)';
-                } else {
-                    // for modern browsers, prefer the 3D accelerated version
-                    this._icon.style[L.DomUtil.TRANSFORM] += ' rotateZ(' + this.options.rotationAngle + 'deg)';
-                }
-            }
-        },
-
-        setRotationAngle: function (angle) {
-            this.options.rotationAngle = angle;
-            this.update();
-            return this;
-        },
-
-        setRotationOrigin: function (origin) {
-            this.options.rotationOrigin = origin;
-            this.update();
-            return this;
-        }
-    });
-})();
-
-
-/***  end of hack ***/
 
 /***************************** BEGIN LICENSE BLOCK ***************************
 

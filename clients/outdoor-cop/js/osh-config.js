@@ -1,18 +1,18 @@
 function init() {
 
     var hostName = "botts-geo.com:8181";
-    //var hostName = "localhost:8181";
+    var localhostName = "localhost:8181";
 
     // time settings
     // for real-time
-    /*var startTime = "now";
+    var startTime = "now";
     var endTime = "2080-01-01T00:00:00Z";
-    var sync = false;*/
+    var sync = false;
     
     // for replay
-    var startTime = "2017-08-09T00:00:00Z";
-    var endTime = "2017-08-13T16:30:00Z";
-    var sync = true;
+    /*var startTime = "2017-08-17T20:59:06Z";
+    var endTime = "2017-08-17T21:17:33Z";
+    var sync = true;*/
 
     var replaySpeed = "1";
     var bufferingTime = 100;
@@ -68,11 +68,11 @@ function init() {
     var treeItems = [];
     //addSoloUav("solo1-local", "3DR Solo", "urn:osh:solo-nav", "urn:osh:solo-video");
     addSoloUav("solo1", "3DR Solo", "urn:osh:sensor:mavlink:solo:S115A58000000-sos", "urn:osh:sensor:rtpcam:solo:S115A58000000-sos");
-    addAndroidPhone("android1", "Chris - Nexus5", "urn:android:device:a0e0eac2fea3f614-sos", null, 0.0);
-    addAndroidPhone("android2", "Alex - Nexus5X", "urn:android:device:cac2076d70a6090f-sos", null, 0.0);
-    //addAndroidPhone("android3", "Lee - Pixel", "urn:android:device:e7e86a0c6539c18a-sos", null, 0.0);
-    addAndroidPhone("android4", "Mike - Nexus5", "urn:android:device:89845ed469b7edc7-sos", null, 0.0);
-    addAndroidPhone("android4", "Ian - HTC", "urn:android:device:1aea89f8ebbd4b09-sos", null, 0.0);
+    addAndroidPhone("android1", "Officer Alex", "urn:android:device:a0e0eac2fea3f614-sos", null, 0.0);
+    addAndroidPhone("android2", "Officer Mike", "urn:android:device:89845ed469b7edc7-sos", null, 0.0);
+    addAndroidPhone("android3", "Officer LRF", "urn:android:device:e7e86a0c6539c18a-sos", null, 0.0);
+    //addAndroidPhone("android4", "Alex - Nexus5X", "urn:android:device:cac2076d70a6090f-sos", null, 0.0);
+    //addAndroidPhone("android5", "Ian - HTC", "urn:android:device:1aea89f8ebbd4b09-sos", null, 0.0);
     addDahuaCam("cityhall", "City Hall Camera", "urn:osh:cityhall", 24.0);
     
 
@@ -95,7 +95,7 @@ function init() {
     
     // time slider view
     if (startTime !== 'now') {
-        var rangeSlider = new OSH.UI.RangeSlider("main-container", {
+        var rangeSlider = new OSH.UI.RangeSlider("rangeslider-container", {
             startTime: startTime,
             endTime: endTime,
             css: "rangeSlider"
@@ -108,7 +108,7 @@ function init() {
     // start streams and display
     dataSourceController.connectAll();
 
-    //initWFST();
+    initWFST();
 
     //--------------------------------------------------------------//
     //------ Helper methods to add specific types of sensors -------//
@@ -320,7 +320,7 @@ function init() {
             draggable: false,
             css: "video-dialog",
             name: entityName + " - Altitude",
-            show: true,
+            show: false,
             dockable: true,
             closeable: true,
             canDisconnect : true,
@@ -499,17 +499,8 @@ function init() {
                         };
                     }
                 },
-                icon : 'images/cameralook.png',
-                iconFunc : {
-                    dataSourceIds: [locationData.getId()],
-                    handler : function(rec,timeStamp,options) {
-                        if(options.selected) {
-                            return 'images/cameralook-selected.png'
-                        } else {
-                            return 'images/cameralook.png';
-                        }
-                    }
-                }
+                icon : 'images/rover-fov.png',
+                label : entityName
             }),
             contextMenuId: mapMenuId+entityID                     
         });
@@ -733,11 +724,13 @@ function init() {
 
 
     function initWFST() {
+        
         var WFS_PROJECTION = "EPSG:3857";
-
+        
+	var featureType = 'wfs_color';
         var wfsService = new CesiumWFST({
             featureNS: 'https://gsx.geolytix.net/geoserver/geolytix_wfs',
-            featureType: 'wfs_color',
+            featureType: featureType,
             srsName: WFS_PROJECTION,
             url:"https://gsx.geolytix.net/geoserver/geolytix_wfs/ows"
         });
@@ -750,13 +743,14 @@ function init() {
         var drawHelper = new DrawHelper(cesiumView.viewer);
 
         var toolbar = drawHelper.addToolbar(document.getElementById("toolbar"), {
-            buttons: ['marker', 'polyline', 'polygon']
+            buttons: ['marker', 'polyline', 'polygon', 'delete']
         });
 
         // add draw helper listener
         toolbar.addListener('markerCreated', drawHelperMarkerCreatedListener);
         toolbar.addListener('polylineCreated', drawHelperPolylineCreatedListener);
         toolbar.addListener('polygonCreated', drawHelperPolygonCreatedListener);
+        toolbar.addListener('primitiveDeleted', drawHelperPrimitiveDeletedListener);
 
         var i = 0;
         // read features from WFS
@@ -765,13 +759,20 @@ function init() {
                 var primitive = geometryArray[i];
 
                 if(primitive.isPolygon || primitive.isPolyline) {
-                    cesiumView.viewer._cesiumWidget.scene.primitives.add(primitive);
+                    cesiumView.viewer.scene.primitives.add(primitive);
+                    primitive.setShowName();
                 }
 
                 else if(primitive.isPoint) {
                     var b = new Cesium.BillboardCollection();
-                    cesiumView.viewer._cesiumWidget.scene.primitives.add(b);
+                    cesiumView.viewer.scene.primitives.add(b);
                     var billboard = b.add(primitive);
+                    
+                    // for test server only, should map the real name from the name field
+                    billboard.name = primitive.extra.color;
+                    //billboard.name = primitive.name
+
+                    billboard.setShowName();
                 }
             }
         };
@@ -781,7 +782,7 @@ function init() {
         };
 
         var bounds = "-20026376.39%2C-20048966.10%2C20026376.39%2C20048966.10";
-        var request = "service=WFS&version=1.1.0&request=GetFeature&typename=wfs_color&srsname=EPSG%3A3857&bbox="+bounds+"%2CEPSG%3A3857";
+        var request = "service=WFS&version=1.1.0&request=GetFeature&typename="+featureType+"&srsname=EPSG%3A3857&bbox="+bounds+"%2CEPSG%3A3857";
 
         wfsService.readAsCesiumPrimitives(request,onSuccessRead);
 
@@ -800,10 +801,11 @@ function init() {
                 scale : 1.0,
                 image: './img/glyphicons_242_google_maps.png',
                 color : new Cesium.Color(1.0, 1.0, 1.0, 1.0),
-                isPoint:true
+                isPoint:true,
+                name: prompt("Please enter a name for the feature", "")
             };
 
-            wfsService.writeTransactionAsCesiumPrimitives(point,null,null,"Point",onSuccessWrite);
+            wfsService.writeTransactionAsCesiumPrimitives(point,null,null,"marker",onSuccessWrite);
         }
 
         function drawHelperPolylineCreatedListener(event) {
@@ -812,6 +814,8 @@ function init() {
                 width: 5,
                 geodesic: true
             });
+            polyline.name = prompt("Please enter a name for the feature", "");
+
             wfsService.writeTransactionAsCesiumPrimitives(polyline,null,null,"polyline",onSuccessWrite);
         }
 
@@ -821,11 +825,24 @@ function init() {
                 //material : Cesium.Material.fromType('Checkerboard')
             });
 
+            cesiumPolygon.name = prompt("Please enter a name for the feature", "");
+
             wfsService.writeTransactionAsCesiumPrimitives(cesiumPolygon,null,null,"polygon",onSuccessWrite);
         }
 
+        function drawHelperPrimitiveDeletedListener(event) {
+            var primitive = event.primitive;
+            var type = "polygon";
+            if(primitive.isPoint) {
+                type = "marker";
+            } else if(primitive.isPolyline) {
+                type = "polyline";
+            }
+            wfsService.writeTransactionAsCesiumPrimitives(null,null,primitive,type,onSuccessWrite);
+        }
+
         function refresh() {
-            cesiumView.viewer._cesiumWidget.scene.primitives.removeAll();
+            //cesiumView.viewer._cesiumWidget.scene.primitives.removeAll();
             wfsService.readAsCesiumPrimitives(request,onSuccessRead);
         }
     }

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="person-top-view.svg"
+   inkscape:export-filename="/home/alex/Projects/Workspace_OSH/project-geohsv/clients/outdoor-cop/images/rover-fov.png"
+   inkscape:export-xdpi="8.8317757"
+   inkscape:export-ydpi="8.8317757">
+  <defs
+     id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4227">
+      <stop
+         style="stop-color:#0000ff;stop-opacity:1;"
+         offset="0"
+         id="stop4229" />
+      <stop
+         style="stop-color:#0000ff;stop-opacity:0;"
+         offset="1"
+         id="stop4231" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4227"
+       id="radialGradient4233"
+       cx="299.634"
+       cy="398.29636"
+       fx="299.634"
+       fy="398.29636"
+       r="207.8461"
+       gradientTransform="matrix(1.0980762,-9.0951197e-8,4.4847252e-8,1.3471506,-29.386973,-154.20294)"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="264.07691"
+     inkscape:cy="560"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1871"
+     inkscape:window-height="1056"
+     inkscape:window-x="49"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4136" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       sodipodi:type="star"
+       style="opacity:0.701;fill:url(#radialGradient4233);fill-opacity:1;stroke:none;stroke-width:8;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4183"
+       sodipodi:sides="3"
+       sodipodi:cx="299"
+       sodipodi:cy="219.36221"
+       sodipodi:r1="240"
+       sodipodi:r2="120"
+       sodipodi:arg1="1.5707963"
+       sodipodi:arg2="2.6179939"
+       inkscape:flatsided="true"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="M 299.00001,459.36221 91.1539,99.362219 l 415.69219,-1.1e-5 z"
+       inkscape:transform-center-y="60"
+       transform="matrix(1.5773502,0,0,1,-172.62773,0)"
+       inkscape:transform-center-x="1.623564e-05"
+       inkscape:export-filename="/home/alex/Projects/Workspace_OSH/project-geohsv/clients/outdoor-cop/images/rover-fov.png"
+       inkscape:export-xdpi="8.8317757"
+       inkscape:export-ydpi="8.8317757" />
+    <ellipse
+       style="opacity:1;fill:#33347b;fill-opacity:1;stroke:none;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:10, 5;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4144"
+       cx="296"
+       cy="442.36221"
+       rx="165"
+       ry="85"
+       inkscape:export-filename="/home/alex/Projects/Workspace_OSH/project-geohsv/clients/outdoor-cop/images/rover-fov.png"
+       inkscape:export-xdpi="8.8317757"
+       inkscape:export-ydpi="8.8317757" />
+    <ellipse
+       style="opacity:1;fill:#4c4c62;fill-opacity:1;stroke:#ffffff;stroke-width:8;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4140"
+       cx="298"
+       cy="404.86218"
+       rx="91"
+       ry="96.5"
+       inkscape:export-filename="/home/alex/Projects/Workspace_OSH/project-geohsv/clients/outdoor-cop/images/rover-fov.png"
+       inkscape:export-xdpi="8.8317757"
+       inkscape:export-ydpi="8.8317757" />
+  </g>
+</svg>
