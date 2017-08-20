@@ -25,24 +25,15 @@
     "autoStart": true
   },
   {
-    "objClass": "org.sensorhub.impl.comm.zeroconf.IpNetworkConfig",
-    "networkInterface": "enx00e04c680132",
-    "zeroConfHostName": "OSH",
-    "id": "3e6eeb1a-99af-42a5-936a-ff94972085ea",
-    "moduleClass": "org.sensorhub.impl.comm.zeroconf.IpCommNetwork",
-    "name": "ZeroConf",
-    "autoStart": true
-  },
-  {
     "objClass": "org.sensorhub.impl.service.sos.SOSServiceConfig",
     "enableTransactional": true,
     "maxObsCount": 100,
     "maxRecordCount": 100000,
     "newStorageConfig": {
       "objClass": "org.sensorhub.impl.persistence.perst.BasicStorageConfig",
+      "storagePath": "db.dat",
       "memoryCacheSize": 1024,
       "objectCacheSize": 100,
-      "storagePath": "db.dat",
       "moduleClass": "org.sensorhub.impl.persistence.perst.ObsStorageImpl",
       "autoStart": false
     },
@@ -52,9 +43,9 @@
         "sensorID": "b7dc16e0-374c-4254-b8dd-49fccffa5cc3",
         "storageID": "b7dc16e0-374c-4254-b8dd-49fccffaee22",
         "hiddenOutputs": [],
-        "liveDataTimeout": 10.0,
+        "liveDataTimeout": 60.0,
         "maxFois": 10,
-        "Offering ID": "urn:osh:solo-nav",
+        "Offering ID": "urn:osh:sensor:mavlink:solo:S115A58000000-sos",
         "enabled": true
       },
       {
@@ -62,9 +53,9 @@
         "sensorID": "2b002777-c01c-4331-a520-8caf419784a3",
         "storageID": "2b002777-c01c-4331-a520-8caf419744ff",
         "hiddenOutputs": [],
-        "liveDataTimeout": 10.0,
+        "liveDataTimeout": 60.0,
         "maxFois": 10,
-        "Offering ID": "urn:osh:solo-video",
+        "Offering ID": "urn:osh:sensor:rtpcam:solo:S115A58000000-sos",
         "enabled": true
       }
     ],
@@ -180,9 +171,9 @@
     "objClass": "org.sensorhub.impl.persistence.StreamStorageConfig",
     "storageConfig": {
       "objClass": "org.sensorhub.impl.persistence.perst.BasicStorageConfig",
+      "storagePath": "solo-nav.dat",
       "memoryCacheSize": 1024,
       "objectCacheSize": 100,
-      "storagePath": "solo-nav.dat",
       "moduleClass": "org.sensorhub.impl.persistence.perst.ObsStorageImpl",
       "autoStart": false
     },
@@ -198,9 +189,9 @@
     "objClass": "org.sensorhub.impl.persistence.StreamStorageConfig",
     "storageConfig": {
       "objClass": "org.sensorhub.impl.persistence.perst.BasicStorageConfig",
+      "storagePath": "solo-video.dat",
       "memoryCacheSize": 1024,
       "objectCacheSize": 100,
-      "storagePath": "solo-video.dat",
       "moduleClass": "org.sensorhub.impl.persistence.perst.ObsStorageImpl",
       "autoStart": false
     },
@@ -211,5 +202,57 @@
     "moduleClass": "org.sensorhub.impl.persistence.GenericStreamStorage",
     "name": "Solo Video DataStore",
     "autoStart": true
+  },
+  {
+    "objClass": "org.sensorhub.impl.client.sost.SOSTClientConfig",
+    "sensorID": "b7dc16e0-374c-4254-b8dd-49fccffa5cc3",
+    "sos": {
+      "objClass": "org.sensorhub.impl.comm.HTTPConfig",
+      "resourcePath": "/sensorhub/sos",
+      "remotePort": 8181,
+      "enableTLS": false,
+      "remoteHost": "botts-geo.com",
+      "localAddress": "AUTO"
+    },
+    "connection": {
+      "objClass": "org.sensorhub.impl.client.sost.SOSTClientConfig$SOSConnectionConfig",
+      "usePersistentConnection": true,
+      "maxQueueSize": 10,
+      "maxConnectErrors": 10,
+      "checkReachability": true,
+      "connectTimeout": 5000,
+      "reconnectPeriod": 10000,
+      "reconnectAttempts": 0
+    },
+    "id": "20f3fd98-6e54-4743-9203-db352bc6f5d1",
+    "moduleClass": "org.sensorhub.impl.client.sost.SOSTClient",
+    "name": "Solo Telemetry Upload",
+    "autoStart": false
+  },
+  {
+    "objClass": "org.sensorhub.impl.client.sost.SOSTClientConfig",
+    "sensorID": "2b002777-c01c-4331-a520-8caf419784a3",
+    "sos": {
+      "objClass": "org.sensorhub.impl.comm.HTTPConfig",
+      "resourcePath": "/sensorhub/sos",
+      "remotePort": 8181,
+      "enableTLS": false,
+      "remoteHost": "botts-geo.com",
+      "localAddress": "AUTO"
+    },
+    "connection": {
+      "objClass": "org.sensorhub.impl.client.sost.SOSTClientConfig$SOSConnectionConfig",
+      "usePersistentConnection": true,
+      "maxQueueSize": 10,
+      "maxConnectErrors": 10,
+      "checkReachability": true,
+      "connectTimeout": 5000,
+      "reconnectPeriod": 10000,
+      "reconnectAttempts": 0
+    },
+    "id": "bef8ba07-906b-4292-82ca-443d6e0bc6de",
+    "moduleClass": "org.sensorhub.impl.client.sost.SOSTClient",
+    "name": "Solo Video Upload",
+    "autoStart": false
   }
 ]
