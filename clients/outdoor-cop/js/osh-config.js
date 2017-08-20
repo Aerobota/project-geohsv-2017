@@ -1,7 +1,7 @@
 function init() {
 
     var hostName = "botts-geo.com:8181";
-    var localhostName = "localhost:8181";
+    var uavHostName = "localhost:8181";
 
     // time settings
     // for real-time
@@ -47,12 +47,16 @@ function init() {
     //--------------------------------------------------------------//
         
     var cesiumView = new OSH.UI.CesiumView("main-container", []);
-    
+    cesiumView.first = false; // disable zoom on first marker
+    cesiumView.viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(-86.587, 34.727, 1200.0)
+    });
+
     // add building models
     var position = Cesium.Cartesian3.fromDegrees(-86.59079648585, 34.72699075691, 153.0);
     var orientation = new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(0.2331612632112), 0, 0);
     var quat = Cesium.Transforms.headingPitchRollQuaternion(position, orientation);
-    cesiumView.viewer.entities.add({
+    var vbc = cesiumView.viewer.entities.add({
         name : "Von Braun Center",
         position : position,
         orientation : quat,
@@ -60,19 +64,17 @@ function init() {
             uri : "./models/von_braun_center.glb"
         }
     });
+    
 
     // --------------------------------------------------------------//
     // ------------------------- Entities ---------------------------//
     // --------------------------------------------------------------//
     
     var treeItems = [];
-    //addSoloUav("solo1-local", "3DR Solo", "urn:osh:solo-nav", "urn:osh:solo-video");
     addSoloUav("solo1", "3DR Solo", "urn:osh:sensor:mavlink:solo:S115A58000000-sos", "urn:osh:sensor:rtpcam:solo:S115A58000000-sos");
     addAndroidPhone("android1", "Officer Alex", "urn:android:device:a0e0eac2fea3f614-sos", null, 0.0);
     addAndroidPhone("android2", "Officer Mike", "urn:android:device:89845ed469b7edc7-sos", null, 0.0);
     addAndroidPhone("android3", "Officer LRF", "urn:android:device:e7e86a0c6539c18a-sos", null, 0.0);
-    //addAndroidPhone("android4", "Alex - Nexus5X", "urn:android:device:cac2076d70a6090f-sos", null, 0.0);
-    //addAndroidPhone("android5", "Ian - HTC", "urn:android:device:1aea89f8ebbd4b09-sos", null, 0.0);
     addDahuaCam("cityhall", "City Hall Camera", "urn:osh:cityhall", 24.0);
     
 
@@ -106,7 +108,7 @@ function init() {
     addAdjusmentSliders();
 
     // start streams and display
-    dataSourceController.connectAll();
+    dataSourceController.connectAll();    
 
     initWFST();
 
@@ -120,7 +122,7 @@ function init() {
         var videoData = new OSH.DataReceiver.VideoH264("Video", {
             protocol : "ws",
             service: "SOS",
-            endpointUrl: hostName + "/sensorhub/sos",
+            endpointUrl: uavHostName + "/sensorhub/sos",
             offeringID: videoOfferingID,
             observedProperty: "http://sensorml.com/ont/swe/property/VideoFrame",
             startTime: startTime,
@@ -128,13 +130,14 @@ function init() {
             replaySpeed: "1",
             syncMasterTime: sync,
             bufferingTime: bufferingTime,
-            timeOut: dataStreamTimeOut
+            timeOut: dataStreamTimeOut,
+            connect: false
         });
         
         var locationData = new OSH.DataReceiver.LatLonAlt("Location", {
             protocol : "ws",
             service: "SOS",
-            endpointUrl: hostName + "/sensorhub/sos",
+            endpointUrl: uavHostName + "/sensorhub/sos",
             offeringID: navOfferingID,
             observedProperty: "http://www.opengis.net/def/property/OGC/0/PlatformLocation",
             startTime: startTime,
@@ -148,7 +151,7 @@ function init() {
         var attitudeData = new OSH.DataReceiver.EulerOrientation("Orientation", {
             protocol : "ws",
             service: "SOS",
-            endpointUrl: hostName + "/sensorhub/sos",
+            endpointUrl: uavHostName + "/sensorhub/sos",
             offeringID: navOfferingID,
             observedProperty: "http://www.opengis.net/def/property/OGC/0/PlatformOrientation",
             startTime: startTime,
@@ -162,7 +165,7 @@ function init() {
         var gimbalData = new OSH.DataReceiver.EulerOrientation("Orientation", {
             protocol : "ws",
             service: "SOS",
-            endpointUrl: hostName + "/sensorhub/sos",
+            endpointUrl: uavHostName + "/sensorhub/sos",
             offeringID: navOfferingID,
             observedProperty: "http://sensorml.com/ont/swe/property/OSH/0/GimbalOrientation",
             startTime: startTime,
@@ -408,7 +411,8 @@ function init() {
             replaySpeed: "1",
             syncMasterTime: sync,
             bufferingTime: bufferingTime,
-            timeOut: dataStreamTimeOut
+            timeOut: dataStreamTimeOut,
+            connect: false
         });
         
         var locationData = new OSH.DataReceiver.LatLonAlt("Location", {
@@ -590,7 +594,8 @@ function init() {
             replaySpeed: "1",
             syncMasterTime: sync,
             bufferingTime: bufferingTime,
-            timeOut: dataStreamTimeOut
+            timeOut: dataStreamTimeOut,
+            connect: false
         });
         
         var locationData = new OSH.DataReceiver.LatLonAlt("Location", {
@@ -660,7 +665,7 @@ function init() {
                       }
                     }
                 },
-                icon : 'images/cameralook.png',
+                /*icon : 'images/cameralook.png',
                 iconFunc : {
                     dataSourceIds: [locationData.getId()],
                     handler : function(rec,timeStamp,options) {
@@ -670,7 +675,9 @@ function init() {
                             return 'images/cameralook.png';
                         }
                     }
-                }
+                },*/
+                icon : 'models/ptzcam.glb',
+                label: entityName
             }),
             contextMenuId: mapMenuId+entityID
         });
@@ -680,7 +687,7 @@ function init() {
             draggable: false,
             css: "video-dialog",
             name: entityName,
-            show: true,
+            show: false,
             dockable: true,
             closeable: true,
             canDisconnect : true,
