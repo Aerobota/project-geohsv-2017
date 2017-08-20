@@ -6675,18 +6675,7 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 	beforeAddingItems: function (options) {
     this.markers = {};
 	  this.first = true;
-
-    var flyToLat = 39.0;
-    var flyToLon = -77.0;
-    var flyToAlt = 5000.0;
-
-    if (options.flyToLoc)
-    {
-      flyToLat = options.flyToLoc.lat;
-      flyToLon = options.flyToLoc.lon;
-      flyToAlt = options.flyToLoc.alt;
-    }
-
+    
 	  var imageryProviders = Cesium.createDefaultImageryProviderViewModels();
 	  this.viewer = new Cesium.Viewer(this.divId, {
                imageryProviderViewModels: imageryProviders,
@@ -6711,12 +6700,6 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 
 	    this.viewer.scene.copyGlobeDepth = true;
 	    this.viewer.scene._environmentState.useGlobeDepthFramebuffer = true;
-
-      // Added 05-16-2017 LB
-      // Go to given location initially
-      this.viewer.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(flyToLon, flyToLat, flyToAlt)
-      });
 
       ///////////////// Added by LAB Jun 29, 2017 /////////////////////////////
       //////////// Displays Lat/Lon on left mouse click ///////////////////////

@@ -25,11 +25,11 @@ function init() {
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
   //------ MAP VIEW ----------------------------------------------//
   window.CESIUM_BASE_URL = 'vendor/all-in-one';
-  var mapView = new OSH.UI.CesiumView("main-container", [],
-      {
-        flyToLoc : { lat: 34.728, lon: -86.586, alt: 1500.0 }
-      }
-  );
+  var mapView = new OSH.UI.CesiumView("main-container", []);
+  mapView.first = false; // disable zooming on first marker
+  mapView.viewer.camera.flyTo({
+     destination: Cesium.Cartesian3.fromDegrees(-86.586, 34.728, 1200.0)
+  });
   mapView.viewer.geocoder = false;
 
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
