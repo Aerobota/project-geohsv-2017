@@ -6689,14 +6689,14 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 
 	  var imageryProviders = Cesium.createDefaultImageryProviderViewModels();
 	  this.viewer = new Cesium.Viewer(this.divId, {
-      baseLayerPicker: true,
-	    imageryProviderViewModels: imageryProviders,
-	    selectedImageryProviderViewModel: imageryProviders[6],
-	    timeline: false,
+               imageryProviderViewModels: imageryProviders,
+	       selectedImageryProviderViewModel: imageryProviders[6],
+	       baseLayerPicker: true,
+			timeline: false,
 			homeButton: false,
 			navigationInstructionsInitiallyVisible: false,
 			navigationHelpButton: false,
-			geocoder: true,
+			geocoder: false,
 			fullscreenButton: false,
 			showRenderLoopErrors: true,
 			animation: false,

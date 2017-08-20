@@ -30,6 +30,8 @@ function init() {
         flyToLoc : { lat: 34.728, lon: -86.586, alt: 1500.0 }
       }
   );
+  mapView.viewer.geocoder = false;
+
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 
 
@@ -221,7 +223,7 @@ function init() {
 
     var taskingView = new OSH.UI.PtzTaskingView(videoDialog.popContentDiv.id,{
         dataSenderId: ptzTasking.id,
-        ptIncrement: 5,
+        ptIncrement: 1,
         zIncrement: 0.05,
         presets: dahuaPresets,
         taskers: dahuaTaskers,

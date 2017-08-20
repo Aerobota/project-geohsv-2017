@@ -1,0 +1,4 @@
+
+- sources combo box in PtzTaskingView
+- map double click logic in CesiumView
+- marker scale in CesiumView
