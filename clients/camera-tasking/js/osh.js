@@ -1580,6 +1580,10 @@ OSH.DataReceiver.DataSource = BaseClass.extend({
       this.timeOut = properties.timeOut;
     }
 
+    if(typeof(properties.connect) == "undefined") {
+        properties.connect = true;
+    }
+
     // checks if type is WebSocket
     if(properties.protocol == "ws") {
       this.connector = new OSH.DataConnector.WebSocketDataConnector(this.buildUrl(properties));
@@ -2948,7 +2952,9 @@ OSH.DataReceiver.DataReceiverController = BaseClass.extend({
     connectAll: function () {
         this.buffer.start();
         for (var id in this.dataSourcesIdToDataSources) {
-            this.dataSourcesIdToDataSources[id].connect();
+            var ds = this.dataSourcesIdToDataSources[id];
+            if (ds.properties.connect)
+                ds.connect();
         }
     }
 });

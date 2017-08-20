@@ -27,7 +27,7 @@ function init() {
   window.CESIUM_BASE_URL = 'vendor/all-in-one';
   var mapView = new OSH.UI.CesiumView("main-container", [],
       {
-        flyToLoc : { lat: 34.728, lon: -86.586, alt: 5000.0 }
+        flyToLoc : { lat: 34.728, lon: -86.586, alt: 1500.0 }
       }
   );
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
@@ -119,7 +119,7 @@ function init() {
     }
   );
 
-  dataReceiverController.connectAll();
+  dataReceiverController.connectAll();  
 
   function addGPSTaskSource(entityID, entityName, taskerName, offeringID, modelName) {
     console.log("Adding Task Source '" + entityName + "'");
@@ -207,8 +207,8 @@ function init() {
         cssSelected: "video-selected",
         name: "Dahua Video",
         useWorker:useFFmpegWorkers,
-        width:352,
-        height:240
+        width:800,
+        height:600
     });
 
     var ptzTasking = new OSH.DataSender.PtzTasking("video-tasking",{
@@ -321,151 +321,6 @@ function init() {
     return entity;
   }
 
-  function addAxisCam(entityID, entityName, offeringID, spsID, headingOffset, axisPresets, axisTaskers) {
-    console.log("Adding Axis Cam '" + entityName + "'");
-
-    // OSH connect
-    var videoDataSource = new OSH.DataReceiver.VideoMjpeg("Mjpeg video", {
-        protocol: "ws",
-        service: "SOS",
-        endpointUrl: hostName + ":8181/sensorhub/sos",
-        offeringID: offeringID,
-        observedProperty: "http://sensorml.com/ont/swe/property/VideoFrame",
-        startTime: startTime,
-        endTime: endTime,
-        syncMasterTime: sync,
-        bufferingTime: 0
-    });
-
-    // var videoDialog = new OSH.UI.MultiDialogView("dialog-main-container", {
-    var videoDialog = new OSH.UI.MultiDialogView(document.body.id, {
-        draggable: true,
-        css: "dialog-multidialog",
-        name: entityName,
-        show:true,
-        dockable: false,
-        draggable: true,
-        closeable: true,
-        keepRatio:true,
-        connectionIds : [videoDataSource.id]
-    });
-
-    var videoView = new OSH.UI.MjpegView(videoDialog.popContentDiv.id, {
-        dataSourceId: videoDataSource.id,
-        css: "video",
-        cssSelected: "video-selected",
-        name: "Android Video",
-        useWorker:useFFmpegWorkers,
-        width:704,
-        height:480
-    });
-
-    var ptzTasking = new OSH.DataSender.PtzTasking("video-tasking",{
-        protocol: "http",
-        service: "SPS",
-        version: "2.0",
-        endpointUrl: hostName + ":8181/sensorhub/sps",
-        offeringID: spsID
-    });
-
-    var taskingView = new OSH.UI.PtzTaskingView(videoDialog.popContentDiv.id,{
-        dataSenderId:ptzTasking.id,
-        presets: axisPresets,
-        taskers: axisTaskers
-    });
-
-    var locationData = new OSH.DataReceiver.LatLonAlt("Location", {
-        protocol : "ws",
-        service: "SOS",
-        endpointUrl: hostName + ":8181/sensorhub/sos",
-        offeringID: offeringID,
-        observedProperty: "http://www.opengis.net/def/property/OGC/0/SensorLocation",
-        startTime: startTime,
-        endTime: endTime,
-        replaySpeed: "1",
-        syncMasterTime: sync,
-        bufferingTime: 0,
-        timeOut: dataStreamTimeOut
-    });
-
-    var headingData = new OSH.DataReceiver.EulerOrientation("Orientation", {
-        protocol : "ws",
-        service: "SOS",
-        endpointUrl: hostName + ":8181/sensorhub/sos",
-        offeringID: offeringID,
-        observedProperty: "http://sensorml.com/ont/swe/property/Pan",
-        startTime: startTime,
-        endTime: endTime,
-        replaySpeed: "1",
-        syncMasterTime: sync,
-        bufferingTime: 0,
-        timeOut: dataStreamTimeOut
-    });
-
-    var entity = {
-        id: entityID,
-        name: entityName,
-        dataSources: [videoDataSource, locationData, headingData]
-    };
-    dataReceiverController.addEntity(entity);
-
-    // add item to tree
-    treeItems.push({
-        entity : entity,
-        path: "PTZ Cams",
-        treeIcon : "images/cameralook.png",
-        contextMenuId: treeMenuId + entity.id
-    })
-
-    // add marker to map
-    mapView.addViewItem({
-        name: entityName,
-        entityId : entity.id,
-        styler : new OSH.UI.Styler.PointMarker({
-            locationFunc : {
-                dataSourceIds : [locationData.getId()],
-                handler : function(rec) {
-                    return {
-                        x : rec.lon,
-                        y : rec.lat,
-                        z : rec.alt
-                    };
-                }
-            },
-            orientationFunc : {
-                dataSourceIds: [headingData.getId()],
-                handler : function(rec,timeStamp,options) {
-                    return {
-                        heading: headingOffset + rec.heading
-                    }
-                }
-            },
-            icon : "./models/PTZwithConeSmooth.glb",
-            label: entityName
-        }),
-        contextMenuId: mapMenuId+entityID
-    });
-
-    // add tree and map context menus
-    var menuItems = [{
-        name: "Show Video",
-        viewId: videoDialog.getId(),
-        css: "fa fa-video-camera",
-        action: "show"
-    }];
-
-    // attach the video view to the dialog
-    videoView.attachTo(videoDialog.popContentDiv.id);
-
-    // append tasking view to dialog
-    videoDialog.appendView(taskingView.divId);
-
-    // var markerMenu = new OSH.UI.ContextMenu.CircularMenu({id:mapMenuId+entityID, groupId: menuGroupId, items: menuItems});
-    var treeMenu = new OSH.UI.ContextMenu.StackMenu({id: treeMenuId+entityID, groupId: menuGroupId, items: menuItems});
-
-    return entity;
-  }
-
   function addAndroidPhone(entityID, entityName, offeringID, flirOfferingID, headingOffset) {
     console.log("Adding Android  Phone " + entityName);
 
@@ -482,7 +337,8 @@ function init() {
           replaySpeed: "1",
           syncMasterTime: sync,
           bufferingTime: 500,
-          timeOut: dataStreamTimeOut
+          timeOut: dataStreamTimeOut,
+          connect: false
       });
 
       var locationData = new OSH.DataReceiver.LatLonAlt(entityName, {
@@ -598,7 +454,7 @@ function init() {
           draggable: true,
           css: "video-dialog",
           name: entityName,
-          show: true,
+          show: false,
           dockable: true,
           closeable: true,
           canDisconnect : true,
