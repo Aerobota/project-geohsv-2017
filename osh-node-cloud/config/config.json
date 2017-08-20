@@ -43,7 +43,7 @@
         "sensorID": "ef2814a2-abfc-4291-9819-dab5c554b6fa",
         "storageID": "8d6901d7-7d8a-449a-a61e-c35a96c53f98",
         "hiddenOutputs": [],
-        "liveDataTimeout": 10.0,
+        "liveDataTimeout": 3600.0,
         "maxFois": 10,
         "Offering ID": "urn:osh:cityhall",
         "enabled": true
@@ -161,6 +161,7 @@
         "alt": 203.0
       }
     },
+    "maxFrameDelay": 3.0,
     "exclusiveControl": true,
     "id": "ef2814a2-abfc-4291-9819-dab5c554b6fa",
     "moduleClass": "org.sensorhub.impl.sensor.dahua.DahuaCameraDriver",
