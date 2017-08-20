@@ -41,19 +41,19 @@ a.navbar-brand:hover {
     transition: color ease-in-out .2s;
 }
 
-.leaflet-container {
-    height: 100%;
+.dialog-multidialog {
+  width: 802px;
+  height: 400px;
 }
 
 .video img{
-    width: 100%;
-    height: calc(100%-0px);
+    width: 800px;
+    height: 450px;
     background-color: #008800;
 }
 
 .video canvas{
     width: 100%;
-    /*height: 100%*/
     height: calc(100%-0px);
 }
 
@@ -104,8 +104,8 @@ a.navbar-brand:hover {
 }
 
 .video-dialog-43 {
-    width:320px;
-    height:290px;
+    width:802px;
+    height:510px;
     margin-bottom:10px;
 }
 
@@ -127,38 +127,9 @@ a.navbar-brand:hover {
     left:10px;
     overflow:hidden;
     width:260px;
-    height:250px;
+    height:450px;
 }
 
 .cesium-baseLayerPicker-dropDown {
     z-index: 10000;
-}
-
-.snapshot-btn {
-    position: absolute;
-    top: 7;
-    right: 10;
-    z-index: 10;
-}
-
-#sliders {
-    position: absolute;
-    top: 7;
-    right: 100;
-    z-index: 10;
-}
-
-#sliders p {
-    display: inline-table;
-    margin-right: 20px;
-    width: 200px;
-}
-
-#sliders span {
-    display: inline;
-}
-
-#sliders input {
-    vertical-align: middle;
-    width: 100%;
 }

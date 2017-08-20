@@ -7,8 +7,8 @@ body {
     border: 0;
 }
 
-.main-view {
-  height: calc(100% - 142px);
+#main-container {
+  height: calc(100% - 52px);
 }
 
 header.navbar {
@@ -104,8 +104,8 @@ a.navbar-brand:hover {
 }
 
 .video-dialog-43 {
-    width:320px;
-    height:290px;
+    width:500px;
+    height:420px;
     margin-bottom:10px;
 }
 
@@ -161,4 +161,8 @@ a.navbar-brand:hover {
 #sliders input {
     vertical-align: middle;
     width: 100%;
+}
+
+.twipsy {
+    display: none;
 }
