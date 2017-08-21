@@ -41,14 +41,9 @@ a.navbar-brand:hover {
     transition: color ease-in-out .2s;
 }
 
-.dialog-multidialog {
-  width: 802px;
-  height: 400px;
-}
-
 .video img{
-    width: 800px;
-    height: 450px;
+    width: 600px;
+    height: 340px;
     background-color: #008800;
 }
 
@@ -104,9 +99,15 @@ a.navbar-brand:hover {
 }
 
 .video-dialog-43 {
-    width:802px;
-    height:510px;
+    width:602px;
+    height:390px;
     margin-bottom:10px;
+}
+
+.dialog-multidialog {
+  width: 602px;
+  height: 390px;
+  margin-bottom:10px;
 }
 
 .chart-view {

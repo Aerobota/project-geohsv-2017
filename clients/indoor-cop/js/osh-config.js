@@ -74,7 +74,6 @@ function init() {
 		alert(lon + ', ' + lat);
         }
     }, false);*/
-
     
     // --------------------------------------------------------------//
     // ------------------------- Entities ---------------------------//
@@ -82,18 +81,18 @@ function init() {
     
     var treeItems = [];
 
-    addAndroidPhoneFixedLocation("android1", "South Hall - North Corridor", "urn:android:device:33522b245709350f-sos", null, -86.591422, 34.726705, 110);
-    addAndroidPhoneFixedLocation("android2", "South Hall - West Corridor", "urn:android:device:bb26ea9abeb8d2c0-sos", null, -86.592062, 34.726267, 220);
-    //addAndroidPhoneFixedLocation("android2", "South Hall - West Corridor", "urn:android:device:cac2076d70a6090f-sos", null, -86.592062, 34.726267, 220);
+    addAndroidPhoneFixedLocation("android1", "Rear Hallway - South", "urn:android:device:c92f9ee08ad5a209-sos", null, -86.591194, 34.725326, 38);
+    addAndroidPhoneFixedLocation("android2", "Rear Hallway - North", "urn:android:device:33522b245709350f-sos", null, -86.59198, 34.726194, 205);
+    addAndroidPhoneFixedLocation("android3", "Rear Hallway - Kitchen", "urn:android:device:bb26ea9abeb8d2c0-sos", null, -86.591403, 34.726787, 140);
     
-    addAxisCam("axis1", "Cam - Catwalk South", "urn:axis:cam:177", -86.591095, 34.725740, 120);
-    addAxisCam("axis2", "Cam - Catwalk North", "urn:axis:cam:180", -86.591433, 34.726129, 185);
-    addAxisCam("axis3", "Cam - South Corridor", "urn:axis:cam:185", -86.590567, 34.725419, 125);
-    addAxisCam("axis4", "Cam - Ballroom 1", "urn:axis:cam:190", -86.590618, 34.725662, 90);
-    addAxisCam("axis5", "Cam - Ballroom 2", "urn:axis:cam:195", -86.591025, 34.725376, 45);
+    addAxisCam("axis1", "Cam - Catwalk South", "urn:axis:cam:177", "urn:axis:cam:00408CB9B5B4", -86.591095, 34.725740, 60+38+90);
+    addAxisCam("axis2", "Cam - Catwalk North", "urn:axis:cam:180", "urn:axis:cam:00408CB9B5B5", -86.591433, 34.726129, 38-90-50);
+    addAxisCam("axis3", "Cam - South Corridor", "urn:axis:cam:185", "urn:axis:cam:00408CEF4F57", -86.590567, 34.725419, 38);
+    addAxisCam("axis4", "Cam - Ballroom 1", "urn:axis:cam:190", "urn:axis:cam:00408CEF4F88", -86.591025, 34.725376, 38-90);
+    addAxisCam("axis5", "Cam - Ballroom 2", "urn:axis:cam:195", "urn:axis:cam:00408CEF4F7D", -86.590618, 34.725662, 163+128);
 
-    addMotionSensor("motion1", "Motion - South East", "urn:osh:client:c99a7368-1bc1-4f00-82ce-cf0072ffbec5-sos", -86.590321, 34.725591);
-    addMotionSensor("motion2", "Motion - South West", "urn:osh:client:f2da0945-4a38-4d1a-95ce-faa807872cd0-sos", -86.590970, 34.725154);
+    addMotionSensor("motion1", "Motion - South East", "urn:osh:client:f2da0945-4a38-4d1a-95ce-faa807872cd0-sos", -86.590321, 34.725591);
+    addMotionSensor("motion2", "Motion - South West", "urn:osh:client:c99a7368-1bc1-4f00-82ce-cf0072ffbec5-sos", -86.590970, 34.725154);
     addMotionSensor("motion3", "Motion - North East", null, -86.591303, 34.726620);
     addMotionSensor("motion4", "Motion - North West", null, -86.591934, 34.726383);
 
@@ -137,7 +136,7 @@ function init() {
     // start streams and display
     dataSourceController.connectAll();
     cesiumView.viewer.flyTo(vbc, {offset: new Cesium.HeadingPitchRange(Cesium.Math.toRadians(-90), Cesium.Math.toRadians(-90), 500)});
-    simUwb();
+    //simUwb();
     //initWFST();
 
     //--------------------------------------------------------------//
@@ -197,7 +196,7 @@ function init() {
         var entity = {
             id: entityID,
             name: entityName,
-            dataSources: [videoData, attitudeData]
+            dataSources: [videoData/*, attitudeData*/]
         };
         
         if (flirVideo != null)
@@ -328,7 +327,7 @@ function init() {
     }
 
 
-    function addAxisCam(entityID, entityName, offeringID, lon, lat, heading0) {
+    function addAxisCam(entityID, entityName, offeringID, sensorID, lon, lat, heading0) {
         
         // create data sources
         var videoData = new OSH.DataReceiver.VideoMjpeg("Video", {
@@ -435,18 +434,18 @@ function init() {
             height: 720
         });
 
-        var ptzTasking = new OSH.DataSender.PtzTasking("video-tasking",{
+        var ptzTasking = new OSH.DataSender.PtzTasking("video-tasking", {
             protocol: "http",
             service: "SPS",
             version: "2.0",
-            endpointUrl: hostName + ":8181/sensorhub/sps",
-            offeringID: offeringID
+            endpointUrl: hostName + "/sensorhub/sps",
+            offeringID: sensorID
         });
 
-        var taskingView = new OSH.UI.PtzTaskingView(videoDialog.popContentDiv.id,{
+        var taskingView = new OSH.UI.PtzTaskingView(videoDialog.popContentDiv.id, {
             dataSenderId: ptzTasking.id,
             ptIncrement: 5,
-            zIncrement: 0.05
+            zIncrement: 100
         });
 
         videoView.attachTo(videoDialog.popContentDiv.id);
@@ -658,7 +657,7 @@ function init() {
                        }
                    }
                 },
-                icon : 'images/tree/blue_key.png',
+                icon : 'images/vip.png',
                 label: entityName
             })
         });
@@ -677,7 +676,6 @@ function init() {
             uwbi += 0.25;
             setTimeout(simUwb, 1000);
         }
-        setTimeout(simUwb, 1000);
 
         return entity;
     }

@@ -6500,7 +6500,6 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 		var isModel = imgIcon.endsWith(".glb");
 		var name = properties.label ? properties.label : "Selected Marker";
 		var geom;
-		var rot = 0;
 
 		if (isModel)
 		{
