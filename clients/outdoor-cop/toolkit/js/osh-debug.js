@@ -6576,8 +6576,11 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 	    		marker.orientation = quat;
     	    }
     		
-    		// update icon or models
-    		//marker.billboard.image = imgIcon;
+    		// update icon or model
+		if (marker.billboard)
+			marker.billboard.image = imgIcon;
+		else if (marker.model)
+			marker.model.uri = imgIcon;    		
     		
     		// zoom map if first marker update
     		if (this.first) {
