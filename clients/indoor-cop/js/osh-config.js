@@ -52,6 +52,7 @@ function init() {
     var rectangle = Cesium.Rectangle.fromDegrees(west, south, east, north);
 
     var vbc = cesiumView.viewer.entities.add({
+        name: "Von Braun Center",
         rectangle: {
 	    coordinates: rectangle,
             material: new Cesium.ImageMaterialProperty({
@@ -91,12 +92,12 @@ function init() {
     addAxisCam("axis4", "Cam - Ballroom 1", "urn:axis:cam:190", -86.590618, 34.725662, 90);
     addAxisCam("axis5", "Cam - Ballroom 2", "urn:axis:cam:195", -86.591025, 34.725376, 45);
 
-    addMotionSensor("motion1", "Motion - South East", "urn:osh:client:c99a7368-1bc1-4f00-82ce-cf0072ffbec5", -86.590321, 34.725591);
-    addMotionSensor("motion1", "Motion - South West", null, -86.590970, 34.725154);
-    addMotionSensor("motion1", "Motion - North East", null, -86.591303, 34.726620);
-    addMotionSensor("motion1", "Motion - North West", null, -86.591934, 34.726383);
+    addMotionSensor("motion1", "Motion - South East", "urn:osh:client:c99a7368-1bc1-4f00-82ce-cf0072ffbec5-sos", -86.590321, 34.725591);
+    addMotionSensor("motion2", "Motion - South West", "urn:osh:client:f2da0945-4a38-4d1a-95ce-faa807872cd0-sos", -86.590970, 34.725154);
+    addMotionSensor("motion3", "Motion - North East", null, -86.591303, 34.726620);
+    addMotionSensor("motion4", "Motion - North West", null, -86.591934, 34.726383);
 
-    addDoorSensor("door1", "Access North East", "urn:osh:client:94dc0797-f0ca-497c-893d-5fb0ce350711", -86.591568, 34.726743);
+    addDoorSensor("door1", "Access North East", "urn:osh:client:94dc0797-f0ca-497c-893d-5fb0ce350711-sos", -86.591568, 34.726743);
     addDoorSensor("door2", "Loading Dock 1", null, -86.592039, 34.726109);
     addDoorSensor("door3", "Loading Dock 2", null, -86.591961, 34.726008);
     addDoorSensor("door4", "Access South West 1", null, -86.591290, 34.725343);
@@ -424,27 +425,6 @@ function init() {
             connectionIds : [videoData.getId()]
         });
 
-        /*var videoDialog = new OSH.UI.DialogView("dialog-main-container", {
-            draggable: false,
-            css: "video-dialog",
-            name: entityName,
-            show: false,
-            dockable: true,
-            closeable: true,
-            canDisconnect : true,
-            swapId: "main-container",
-            connectionIds: [videoData.getId()]
-        });*/
-
-        /*var videoView = new OSH.UI.FFMPEGView(videoDialog.popContentDiv.id, {
-            dataSourceId: videoData.getId(),
-            entityId : entity.id,
-            css: "video",
-            cssSelected: "video-selected",
-            useWorker: useFFmpegWorkers,
-            width: 1280,
-            height: 720
-        });*/
         var videoView = new OSH.UI.MjpegView(videoDialog.popContentDiv.id, {
             dataSourceId: videoData.getId(),
             entityId : entity.id,
@@ -501,7 +481,8 @@ function init() {
             replaySpeed: "1",
             syncMasterTime: sync,
             bufferingTime: bufferingTime,
-            timeOut: dataStreamTimeOut
+            timeOut: dataStreamTimeOut,
+            connect: offeringID != null
         });
         
         // create entity
@@ -528,6 +509,9 @@ function init() {
                     x : lon,
                     y : lat,
                     z : 0
+                },
+                orientation : {
+                    heading : 90
                 },
                 icon : 'images/motion-off.png',
                 iconFunc : {
@@ -563,7 +547,8 @@ function init() {
             replaySpeed: "1",
             syncMasterTime: sync,
             bufferingTime: bufferingTime,
-            timeOut: dataStreamTimeOut
+            timeOut: dataStreamTimeOut,
+            connect: offeringID != null
         });
         
         // create entity
