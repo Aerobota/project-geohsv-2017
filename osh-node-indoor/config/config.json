@@ -127,8 +127,8 @@
     },
     "ogcCapabilitiesInfo": {
       "objClass": "org.sensorhub.impl.service.ogc.OGCServiceConfig$CapabilitiesInfo",
-      "title": "Field Node SOS Server",
-      "description": "SOS hosting all data collected from local sensors and UAV",
+      "title": "VBC Node SOS Server",
+      "description": "SOS hosting all data collected from indoor sensors and cameras",
       "serviceProvider": {
         "objClass": "org.vast.util.ResponsibleParty",
         "individualName": "Alex Robin",
@@ -564,11 +564,19 @@
     },
     "ogcCapabilitiesInfo": {
       "objClass": "org.sensorhub.impl.service.ogc.OGCServiceConfig$CapabilitiesInfo",
+      "title": "VBC Node SPS Server",
+      "description": "SPS enabling PTZ tasking of VBC cameras",
       "serviceProvider": {
         "objClass": "org.vast.util.ResponsibleParty",
+        "individualName": "Alex Robin",
+        "organizationName": "Sensiasoft",
+        "positionName": "CTO",
         "voiceNumbers": [],
         "faxNumbers": [],
         "deliveryPoints": [],
+        "city": "Huntsville",
+        "administrativeArea": "AL",
+        "country": "USA",
         "emails": [],
         "hrefPresent": false
       }
