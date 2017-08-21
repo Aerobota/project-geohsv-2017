@@ -440,7 +440,7 @@ function init() {
             service: "SPS",
             version: "2.0",
             endpointUrl: hostName + ":8181/sensorhub/sps",
-            offeringID: offeringID.replace("-sos", "")
+            offeringID: offeringID
         });
 
         var taskingView = new OSH.UI.PtzTaskingView(videoDialog.popContentDiv.id,{

@@ -516,5 +516,70 @@
     "moduleClass": "org.sensorhub.impl.persistence.GenericStreamStorage",
     "name": "Axis195 Storage",
     "autoStart": true
+  },
+  {
+    "objClass": "org.sensorhub.impl.service.sps.SPSServiceConfig",
+    "enableTransactional": false,
+    "connectors": [
+      {
+        "objClass": "org.sensorhub.impl.service.sps.SensorConnectorConfig",
+        "sensorID": "152939a4-060c-4a68-ab9e-57b4484f9177",
+        "hiddenCommands": [],
+        "Offering ID": "urn:axis:cam:177",
+        "enabled": true
+      },
+      {
+        "objClass": "org.sensorhub.impl.service.sps.SensorConnectorConfig",
+        "sensorID": "152939a4-060c-4a68-ab9e-57b4484f9180",
+        "hiddenCommands": [],
+        "Offering ID": "urn:axis:cam:180",
+        "enabled": true
+      },
+      {
+        "objClass": "org.sensorhub.impl.service.sps.SensorConnectorConfig",
+        "sensorID": "152939a4-060c-4a68-ab9e-57b4484f9185",
+        "hiddenCommands": [],
+        "Offering ID": "urn:axis:cam:185",
+        "enabled": true
+      },
+      {
+        "objClass": "org.sensorhub.impl.service.sps.SensorConnectorConfig",
+        "sensorID": "152939a4-060c-4a68-ab9e-57b4484f9190",
+        "hiddenCommands": [],
+        "Offering ID": "urn:axis:cam:190",
+        "enabled": true
+      },
+      {
+        "objClass": "org.sensorhub.impl.service.sps.SensorConnectorConfig",
+        "sensorID": "152939a4-060c-4a68-ab9e-57b4484f9195",
+        "hiddenCommands": [],
+        "Offering ID": "urn:axis:cam:195",
+        "enabled": true
+      }
+    ],
+    "security": {
+      "objClass": "org.sensorhub.api.security.SecurityConfig",
+      "enableAccessControl": false,
+      "requireAuth": true
+    },
+    "ogcCapabilitiesInfo": {
+      "objClass": "org.sensorhub.impl.service.ogc.OGCServiceConfig$CapabilitiesInfo",
+      "serviceProvider": {
+        "objClass": "org.vast.util.ResponsibleParty",
+        "voiceNumbers": [],
+        "faxNumbers": [],
+        "deliveryPoints": [],
+        "emails": [],
+        "hrefPresent": false
+      }
+    },
+    "enableHttpGET": true,
+    "enableHttpPOST": true,
+    "enableSOAP": true,
+    "endPoint": "/sps",
+    "id": "ce31c18b-d6cc-4e07-ab7d-d8135ddbaa8b",
+    "moduleClass": "org.sensorhub.impl.service.sps.SPSService",
+    "name": "SPS Service",
+    "autoStart": false
   }
 ]
