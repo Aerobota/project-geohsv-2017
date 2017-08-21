@@ -1599,6 +1599,10 @@ OSH.DataReceiver.DataSource = BaseClass.extend({
     if(typeof properties.timeOut != "undefined") {
       this.timeOut = properties.timeOut;
     }
+
+    if(typeof(properties.connect) == "undefined") {
+        properties.connect = true;
+    }
     
     // checks if type is WebSocket
     if(properties.protocol == "ws") {
@@ -2856,7 +2860,9 @@ OSH.DataReceiver.DataReceiverController = BaseClass.extend({
     connectAll: function () {
         this.buffer.start();
         for (var id in this.dataSourcesIdToDataSources) {
-            this.dataSourcesIdToDataSources[id].connect();
+            var ds = this.dataSourcesIdToDataSources[id];
+            if (ds.properties.connect)
+                ds.connect();
         }
     }
 });
@@ -6494,6 +6500,7 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 		var isModel = imgIcon.endsWith(".glb");
 		var name = properties.label ? properties.label : "Selected Marker";
 		var geom;
+		var rot = 0;
 
 		if (isModel)
 		{
@@ -6510,7 +6517,7 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 		else
 		{			
                 	var rot = 0;
-			if (properties.orientation != 'undefined')
+                        if (properties.orientation != 'undefined')
 				rot = properties.orientation.heading;
 			geom = {
 				name: name,
@@ -6551,8 +6558,7 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
         	var marker =  this.markers[id];
         	
         	// get ground altitude if non specified
-        	if (typeof(alt) == "undefined" || isNaN(alt))
-        	{
+        	if (typeof(alt) == "undefined" || isNaN(alt)) {
 	    		alt = this.getAltitude(lat, lon);
 	    		if (alt > 1)
 	    			alt += 0.3;
@@ -6563,18 +6569,22 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
     		marker.position = pos
     		    		
     		// update orientation
-    		if (typeof(orient) != "undefined")
-    	    {
+    		if (typeof(orient) != "undefined") {
     			var DTR = Math.PI/180.;
     			var heading = orient.heading;
 	    		var pitch = 0.0;
 	    		var roll = 0.0;
 	    		var quat = Cesium.Transforms.headingPitchRollQuaternion(pos, new Cesium.HeadingPitchRoll(heading*DTR, /*roll*DTR*/0.0, pitch*DTR)); // inverse roll and pitch to go from NED to ENU
 	    		marker.orientation = quat;
-    	    }
+                        if (marker.billboard)
+				marker.billboard.rotation = Cesium.Math.toRadians(heading);
+		}
     		
-    		// update icon or models
-    		//marker.billboard.image = imgIcon;
+    		// update icon or model
+                if (marker.billboard)
+			marker.billboard.image = imgIcon;
+		else if (marker.model)
+			marker.model.uri = imgIcon;    		
     		
     		// zoom map if first marker update
     		if (this.first) {
@@ -7927,6 +7937,8 @@ OSH.UI.DialogView = OSH.UI.View.extend({
                 this.initialWidth = this.rootTag.offsetWidth;
             }
         }
+        //if (!this.connected)
+        //    this.connect();
     },
 
     /**
@@ -7934,7 +7946,7 @@ OSH.UI.DialogView = OSH.UI.View.extend({
      * @memberof OSH.UI.DialogView
      */
     connect: function() {
-        if(!this.swapped) {
+        if(this.connectionIds.length > 0 && !this.swapped) {
             if (!this.connected) {
                 OSH.EventManager.fire(OSH.EventManager.EVENT.CONNECT_DATASOURCE, {dataSourcesId: this.connectionIds});
             } else {
@@ -7975,7 +7987,6 @@ OSH.UI.DialogView = OSH.UI.View.extend({
         }
     },
 
-
     /**
      *
      * @param callback
@@ -7993,6 +8004,8 @@ OSH.UI.DialogView = OSH.UI.View.extend({
     close: function () {
        // this.rootTag.parentNode.removeChild(this.rootTag);
         this.rootTag.style.display = "none";
+        if (this.connected)
+            this.connect();
         if (this.onClose) {
             this.onClose();
         }
