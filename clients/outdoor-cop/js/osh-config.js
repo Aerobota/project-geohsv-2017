@@ -76,7 +76,8 @@ function init() {
     addAndroidPhone("android2", "Officer Mike", "urn:android:device:89845ed469b7edc7-sos", null, 0.0);
     addAndroidPhone("android3", "Officer LRF", "urn:android:device:e7e86a0c6539c18a-sos", null, 0.0);
     addDahuaCam("cityhall", "City Hall Camera", "urn:osh:cityhall", 24.0);
-    
+    addLRF("lrf", "LRF Target", "urn:lasertech:trupulse360:target");
+
 
     // --------------------------------------------------------------//
     // ------------------------ Tree View ---------------------------//
@@ -728,6 +729,64 @@ function init() {
         
         return entity;
     }
+    
+
+    function addLRF(entityID, entityName, offeringID) {
+      
+      // create data sources
+      var locationData = new OSH.DataReceiver.LatLonAlt(entityName, {
+          protocol : "ws",
+          service: "SOS",
+          endpointUrl: hostName + "/sensorhub/sos",
+          offeringID: offeringID,
+          observedProperty: "http://sensorml.com/ont/swe/property/TargetLocation",
+          startTime: startTime,
+          endTime: endTime,
+          replaySpeed: "1",
+          syncMasterTime: sync,
+          bufferingTime: 500,
+          timeOut: dataStreamTimeOut
+      });
+
+      // create entity
+      var entity = {
+          id: entityID,
+          name: entityName,
+          dataSources: [locationData]
+      };
+
+      dataSourceController.addEntity(entity);
+
+      // add item to tree
+      treeItems.push({
+          entity : entity,
+          path: "LRF",
+          treeIcon : "images/blue_key.png",
+          contextMenuId: treeMenuId + entity.id
+      })
+
+      // add marker to map
+      cesiumView.addViewItem({
+          name: entityName,
+          entityId : entity.id,
+          styler : new OSH.UI.Styler.PointMarker({
+              locationFunc : {
+                  dataSourceIds : [locationData.getId()],
+                  handler : function(rec) {
+                      return {
+                          x : rec.lon,
+                          y : rec.lat,
+                          z : rec.alt
+                      };
+                  }
+              },
+              icon : "images/blue_key.png",
+              label : entityName
+          })
+      });
+
+      return entity;
+    }
 
 
     function initWFST() {
@@ -806,7 +865,7 @@ function init() {
                 horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
                 verticalOrigin : Cesium.VerticalOrigin.CENTER,
                 scale : 1.0,
-                image: './img/glyphicons_242_google_maps.png',
+                image: './images/marker-icon.png',
                 color : new Cesium.Color(1.0, 1.0, 1.0, 1.0),
                 isPoint:true,
                 name: prompt("Please enter a name for the feature", "")

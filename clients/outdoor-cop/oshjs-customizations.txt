@@ -1,3 +1,0 @@
-
-- marker rotation in CesiumView
-- marker context menu in CesiumView

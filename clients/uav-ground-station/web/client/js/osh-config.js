@@ -4,16 +4,16 @@ function init() {
 
     // time settings
     // for real-time
-    /*var startTime = "now";
+    var startTime = "now";
     var endTime = "2080-01-01T00:00:00Z";
-    var sync = false;*/
+    var sync = false;
     
     // for replay
-    var startTime = "2017-07-17T15:41:40.601Z";
+    /*var startTime = "2017-07-17T15:41:40.601Z";
     var endTime = "2017-07-17T15:57:28.601Z";
     //var startTime = "2017-07-17T22:12:00.601Z";
     //var endTime = "2017-07-17T22:57:28.601Z";
-    var sync = true;
+    var sync = true;*/
 
     var replaySpeed = "1";
     var bufferingTime = 100;

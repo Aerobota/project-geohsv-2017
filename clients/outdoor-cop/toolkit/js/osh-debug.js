@@ -6342,6 +6342,13 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
                 this.imageDrapingPrimitive = newImageDrapingPrimitive;
             }*/
     	    
+    	    // hide if viewing horizon
+            if (gimbal.pitch > -45) {
+                this.viewer.scene.primitives.remove(this.imageDrapingPrimitive);
+                this.imageDrapingPrimitive = null;
+                return;
+            }
+    	    
     	    // snapshot
             if (snapshot) {
                 var ctx = this.captureCanvas.getContext('2d');
@@ -6574,6 +6581,8 @@ OSH.UI.CesiumView = OSH.UI.View.extend({
 	    		var roll = 0.0;
 	    		var quat = Cesium.Transforms.headingPitchRollQuaternion(pos, new Cesium.HeadingPitchRoll(heading*DTR, /*roll*DTR*/0.0, pitch*DTR)); // inverse roll and pitch to go from NED to ENU
 	    		marker.orientation = quat;
+                        if (marker.billboard)
+				marker.billboard.rotation = Cesium.Math.toRadians(heading);
     	    }
     		
     		// update icon or model

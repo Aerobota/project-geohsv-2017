@@ -54,7 +54,7 @@ function init() {
   //var tasker03 = addAndroidPhone("mikePixel", "Officer Botts 1", "urn:android:device:e7e86a0c6539c18a-sos", null,0);
   var tasker04 = addAndroidPhone("mikeNexus5", "Officer Botts 2", "urn:android:device:89845ed469b7edc7-sos", null,0);
   //var tasker05 = addAndroidPhone("ianHtc10", "Officer Patterson", "urn:android:device:1aea89f8ebbd4b09-sos", null,0);
-  var tasker06 = addLRF("mikeLRF", "Officer LRF", "urn:lasertech:trupulse360:target");
+  var tasker06 = addLRF("mikeLRF", "LRF Target", "urn:lasertech:trupulse360:target");
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 
