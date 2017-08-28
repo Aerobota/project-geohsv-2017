@@ -12,4 +12,5 @@ This OSH node is set-up with an SOS-T that collects the following data:
 It is also set-up with drivers to connect with the following sensors:
 
 - Location, orientation and video feed from City Hall camera (RTSP over VPN)
-- Tasking of City Hall camera?
+- Processing for tasking of City Hall camera (conversion between Lat/Lon/Alt command to PTZ)
+- PRocessing for computing LRF target location (using raw LRF range+azimuth+elevation data)
