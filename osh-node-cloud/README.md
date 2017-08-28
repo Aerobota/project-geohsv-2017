@@ -13,4 +13,4 @@ It is also set-up with drivers to connect with the following sensors:
 
 - Location, orientation and video feed from City Hall camera (RTSP over VPN)
 - Processing for tasking of City Hall camera (conversion between Lat/Lon/Alt command to PTZ)
-- PRocessing for computing LRF target location (using raw LRF range+azimuth+elevation data)
+- Processing for computing LRF target location (using raw LRF range+azimuth+elevation data)
