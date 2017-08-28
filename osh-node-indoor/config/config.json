@@ -51,9 +51,9 @@
         "objClass": "org.sensorhub.impl.service.sos.SensorDataProviderConfig",
         "sensorID": "d9a5aca4-69ba-45d3-8446-02202beb9c80",
         "hiddenOutputs": [],
-        "liveDataTimeout": 10.0,
+        "liveDataTimeout": 600.0,
         "maxFois": 10,
-        "Offering ID": "urn:osh:uwb",
+        "Offering ID": "urn:osh:sensor:trek1000:EVB110870-sos",
         "enabled": true
       },
       {
