@@ -3,12 +3,12 @@
 
 This OSH node collects the following data through SOS-T (over WiFi):
 
-- Location, look direction and video feeds of instrumented first responders (indoor)
+- Video feeds from adhoc cameras (Android phones)
 
 
 It is also set-up with drivers to read data from the following sensors:
 
 - UWB positioning system (USB)
-- Indoor cameras (RTSP over WiFi)
+- Indoor Axis cameras made accessible by VBC (using RTSP over WiFi)
 
 
